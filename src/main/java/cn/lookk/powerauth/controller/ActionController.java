@@ -1,0 +1,35 @@
+package cn.lookk.powerauth.controller;
+
+import cn.wt.handleexception.util.ResultUtil;
+import cn.wt.handleexception.vo.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ * @ClassName: ActionController
+ * @Description: TODO
+ * @Author jiaoxiangyu
+ * @Date 2019/9/8
+ * @Version 1.0
+ * @Since JDK1.8
+ */
+@Controller
+@RequestMapping(value = "/action")
+public class ActionController {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ActionController.class);
+
+    @RequestMapping(value = "/{pageName}", method = RequestMethod.GET)
+    public String action(@PathVariable(name = "pageName") String pageName, ModelAndView modelAndView) {
+        logger.info("pageName={}",pageName);
+        return pageName;
+    }
+
+}

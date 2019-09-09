@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>权限认证管理平台</title>
+    <link rel="stylesheet" th:href="@{/static/js/layui/css/layui.css}">
+
+</head>
+<body class="layui-layout-body">
+    <table class="layui-hide" id="userMge"></table>
+</body>
+
+<script th:src="@{/static/js/layui/layui.js}" charset="utf-8"></script>
+
+<script th:inline="none">
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#userMge'
+            ,url:'/user/find'
+            , cols: [[
+                {field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'name', width:80, title: '用户名'}
+                ,{field:'createTime', width:80, title: '创建时间'}
+                ,{field:'updateTime', width:80, title: '更新时间'}
+            ]]
+            ,page: true
+        });
+    });
+</script>
