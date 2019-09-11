@@ -4,20 +4,21 @@
 <mapper namespace="cn.lookk.powerauth.dao.UserMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.User">
-        insert  into  tb_user (id , name,  create_time, update_time, delete)
-        values (#{id}, #{name}, #{createTime}, #{updateTime}, #{delete})
+        insert  into  tb_user (id , name,  create_time, update_time, del)
+        values (#{id}, #{name}, #{createTime}, #{updateTime}, #{del})
     </insert>
 
 
    <update id="update" parameterType="cn.lookk.powerauth.po.User">
-       update tb_user set name = #{name}, create_time=#{createTime}, update_time=#{updateTime}, delete=#{delete};
+       update tb_user set name = #{name}, create_time=#{createTime}, update_time=#{updateTime}, del=#{del};
         <where>
             id=#{id}
+            and del=0
         </where>
     </update>
 
-    <delete id="delete" parameterType="cn.lookk.powerauth.po.User">
-        delete from tb_user where id=#{id}
+    <delete id="delete" parameterType="java.lang.Long">
+        update tb_user set del=1 where id=#{id} limit 1;
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.User" id="userMap">
@@ -25,15 +26,19 @@
         <result property="name" column="name"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="delete" column="delete"/>
+        <result property="del" column="del"/>
     </resultMap>
 
     <select id="findOneById" resultType="cn.lookk.powerauth.po.User">
-        select * from  tb_user where id=#{id}
+        select * from  tb_user where id=#{id} and del=0
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from  tb_user where del=0
     </select>
 
     <select id="findAll" resultMap="userMap">
-        select * from tb_user
+        select * from tb_user where del=0 limit #{start}, #{limit}
     </select>
 
 </mapper>

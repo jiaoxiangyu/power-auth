@@ -21,4 +21,8 @@ public class PageResult implements Serializable {
     private Object data;
     private Integer count;
 
+    public PageResult(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
 }

@@ -1,6 +1,7 @@
 package cn.lookk.powerauth.service;
 
 import cn.lookk.powerauth.po.User;
+import cn.lookk.powerauth.vo.PageHelp;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface IUserService {
 
     User findOneById(Long id);
 
-    List<User> findAll();
+    PageHelp findAll(String search, int page, int limit);
 }

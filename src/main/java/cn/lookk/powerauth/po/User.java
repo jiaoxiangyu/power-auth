@@ -24,5 +24,5 @@ public class User {
     //跟新时间
     private LocalDateTime updateTime;
     //删除标记
-    private int delete;
+    private int del;
 }

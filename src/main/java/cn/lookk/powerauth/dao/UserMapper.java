@@ -16,5 +16,7 @@ public interface UserMapper {
 
     User findOneById(Long id);
 
-    List<User> findAll();
+    int count();
+
+    List<User> findAll(int start, int limit);
 }

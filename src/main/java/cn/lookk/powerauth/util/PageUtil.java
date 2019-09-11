@@ -9,4 +9,12 @@ package cn.lookk.powerauth.util;
  * @Since JDK1.8
  */
 public class PageUtil {
+
+    public static int pageStart(int page, int limit, int total){
+        int start=(page-1)*limit;
+        if (start>=total){
+            start=start-limit;
+        }
+        return start;
+    }
 }
