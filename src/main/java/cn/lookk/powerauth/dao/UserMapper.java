@@ -18,5 +18,5 @@ public interface UserMapper {
 
     int count();
 
-    List<User> findAll(int start, int limit);
+    List<User> find(int start, int limit);
 }

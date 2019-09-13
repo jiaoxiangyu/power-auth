@@ -4,13 +4,12 @@
 <mapper namespace="cn.lookk.powerauth.dao.UserMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.User">
-        insert  into  tb_user (id , name,  create_time, update_time, del)
-        values (#{id}, #{name}, #{createTime}, #{updateTime}, #{del})
+        insert  into  tb_user (id , name, phone, pwd, role_id, role, create_time, update_time, del)
+        values (#{id}, #{name}, #{phone}, #{pwd}, #{roleId}, #{role}, #{createTime}, #{updateTime}, #{del})
     </insert>
 
-
    <update id="update" parameterType="cn.lookk.powerauth.po.User">
-       update tb_user set name = #{name}, create_time=#{createTime}, update_time=#{updateTime}, del=#{del};
+       update tb_user set name = #{name}, phone=#{phone}, pwd=#{pwd}, role_id=#{roleId}, role=#{role}, update_time=#{updateTime}
         <where>
             id=#{id}
             and del=0
@@ -24,6 +23,10 @@
     <resultMap type="cn.lookk.powerauth.po.User" id="userMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="pwd" column="pwd"/>
+        <result property="roleId" column="role_id"/>
+        <result property="role" column="role"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="del" column="del"/>
@@ -37,7 +40,7 @@
         select count(*) from  tb_user where del=0
     </select>
 
-    <select id="findAll" resultMap="userMap">
+    <select id="find" resultMap="userMap">
         select * from tb_user where del=0 limit #{start}, #{limit}
     </select>
 

@@ -19,6 +19,14 @@ public class User {
     private Long id;
     //名字
     private String name;
+    //手机号
+    private String phone;
+    //密码
+    private String pwd;
+    //角色id
+    private int roleId;
+    //角色
+    private String role;
     //创建时间
     private LocalDateTime createTime;
     //跟新时间

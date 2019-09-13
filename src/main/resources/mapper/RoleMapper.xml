@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lookk.powerauth.dao.RoleMapper">
+
+    <insert id="add" parameterType="cn.lookk.powerauth.po.Role">
+        insert  into  tb_role (id , name, describe)
+        values (#{id}, #{name}, #{descibe})
+    </insert>
+
+   <update id="update" parameterType="cn.lookk.powerauth.po.Role">
+       update tb_role set name = #{name}, describe=#{describe} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete tb_role where id=#{id} limit 1;
+    </delete>
+
+    <resultMap type="cn.lookk.powerauth.po.Role" id="roleMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="describe" column="phone"/>
+    </resultMap>
+
+    <select id="findOneById" resultType="cn.lookk.powerauth.po.Role">
+        select * from  tb_role where id=#{id}
+    </select>
+
+    <select id="findOneByName" resultType="cn.lookk.powerauth.po.Role">
+        select * from  tb_role where name=#{name}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from  tb_role
+    </select>
+
+    <select id="find" resultMap="roleMap">
+        select * from tb_role where limit #{start}, #{limit}
+    </select>
+
+    <select id="findAll" resultMap="roleMap">
+        select * from tb_role
+    </select>
+
+</mapper>

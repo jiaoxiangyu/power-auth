@@ -14,5 +14,5 @@ public interface IUserService {
 
     User findOneById(Long id);
 
-    PageHelp findAll(String search, int page, int limit);
+    PageHelp find(String search, int page, int limit);
 }

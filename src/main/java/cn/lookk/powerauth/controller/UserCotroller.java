@@ -1,7 +1,9 @@
 package cn.lookk.powerauth.controller;
 
 import cn.lookk.powerauth.constants.ResponseEnum;
+import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.User;
+import cn.lookk.powerauth.service.IRoleService;
 import cn.lookk.powerauth.service.IUserService;
 import cn.lookk.powerauth.util.PageResultUtil;
 import cn.lookk.powerauth.vo.PageHelp;
@@ -14,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 
 /**
@@ -33,6 +37,9 @@ public class UserCotroller {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IRoleService roleService;
+
     /**
      * @title:  add
      * @description:  TODO
@@ -43,11 +50,6 @@ public class UserCotroller {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ModelAndView add(@RequestBody User user, ModelAndView modelAndView){
         int add = userService.add(user);
-
-        //Assert.is
-        /*if (add==1){
-            modelAndView.addObject("msg","")
-        }*/
         modelAndView.setViewName("userAdd");
        return modelAndView;
     }
@@ -56,19 +58,13 @@ public class UserCotroller {
      * @title:  findById
      * @description:  TODO
      * @param id
-     * @param modelAndView
      * @return  org.springframework.web.servlet.ModelAndView
      */
-    @RequestMapping(value = "findById", method = RequestMethod.GET)
-    public ModelAndView findById(Long id, ModelAndView modelAndView) {
-        modelAndView.addObject("user", userService.findOneById(id));
-        modelAndView.setViewName("userMge");
-        return modelAndView;
+    @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET)
+    public Result findOne(@PathVariable Long id) {
+        return ResultUtil.success(userService.findOneById(id));
     }
 
-
-
-    
     /**
      * @title:  find
      * @description:  TODO
@@ -82,10 +78,16 @@ public class UserCotroller {
                            @RequestParam(defaultValue = "10", name = "limit") int limit,
                            @RequestParam(defaultValue = "", name = "search") String search) {
         logger.info("page={}, limit={}, search={}", page, limit,search);
-        PageHelp pageHelp =userService.findAll(search, page, limit);
+        PageHelp pageHelp =userService.find(search, page, limit);
         return PageResultUtil.success(pageHelp.getTotal(),pageHelp.getData());
     }
 
+    /**
+     * @title:  delete
+     * @description:  删除
+     * @param id
+     * @return  cn.wt.handleexception.vo.Result
+     */
     @RequestMapping(value = "del/{id}", method = RequestMethod.GET)
     public Result delete(@PathVariable("id")Long id){
         Assert.isLessThanOrEqualZero(id, 412, "id is null");
@@ -93,6 +95,30 @@ public class UserCotroller {
         return ResultUtil.success();
     }
 
+    @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
+    public ModelAndView toUpdate(@PathVariable Long id, ModelAndView modelAndView) {
+        User user=userService.findOneById(id);
+        logger.info("user={}",user);
+        modelAndView.addObject("user",user);
+        List<Role> roles=roleService.findAll();
+        logger.info("roles={}",roles);
+        modelAndView.addObject("roles",roles);
+        modelAndView.setViewName("userUpdate");
+        return modelAndView;
+    }
+
+    /**
+     * @title:  update
+     * @description:  TODO
+     * @param user
+     * @return  cn.wt.handleexception.vo.Result
+     */
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public Result update(User user){
+        logger.info("update user={}", user);
+        userService.update(user);
+        return ResultUtil.success();
+    }
 
 
 }
