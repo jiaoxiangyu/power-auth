@@ -18,5 +18,9 @@ public interface UserMapper {
 
     int count();
 
+    int countBySearch(String search);
+
     List<User> find(int start, int limit);
+
+    List<User> findBySearch(int start, int limit, String search);
 }

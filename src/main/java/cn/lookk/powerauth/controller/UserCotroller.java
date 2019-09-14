@@ -79,6 +79,7 @@ public class UserCotroller {
                            @RequestParam(defaultValue = "", name = "search") String search) {
         logger.info("page={}, limit={}, search={}", page, limit,search);
         PageHelp pageHelp =userService.find(search, page, limit);
+        logger.info("pageHelp={}", pageHelp);
         return PageResultUtil.success(pageHelp.getTotal(),pageHelp.getData());
     }
 

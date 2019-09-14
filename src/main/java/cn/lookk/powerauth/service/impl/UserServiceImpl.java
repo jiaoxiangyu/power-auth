@@ -58,13 +58,23 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public PageHelp find(String search, int page, int limit) {
-        int total=userMapper.count();
-        if (total==0){
-            return new PageHelp();
-        }
-        int start=PageUtil.pageStart(page, limit, total);
+        if (search.equals("")) {
+            int total = userMapper.count();
+            if (total == 0) {
+                return new PageHelp();
+            }
+            int start = PageUtil.pageStart(page, limit, total);
 
-        List<User> data=userMapper.find(start,limit);
-        return new PageHelp(total, data);
+            List<User> data = userMapper.find(start, limit);
+            return new PageHelp(total, data);
+        }else {
+            int total = userMapper.countBySearch(search);
+            if (total == 0) {
+                return new PageHelp();
+            }
+            int start = PageUtil.pageStart(page, limit, total);
+            List<User> data = userMapper.findBySearch(start, limit, search);
+            return new PageHelp(total, data);
+        }
     }
 }

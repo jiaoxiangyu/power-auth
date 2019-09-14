@@ -40,8 +40,21 @@
         select count(*) from  tb_user where del=0
     </select>
 
+    <select id="countBySearch" resultType="java.lang.Integer">
+        /*naem 和 phone 都建有索引*/
+        select count(*) from  tb_user
+        where (name like CONCAT(#{search, jdbcType=VARCHAR},'%') or phone like CONCAT(#{search, jdbcType=VARCHAR},'%'))
+        and del=0
+    </select>
+
     <select id="find" resultMap="userMap">
         select * from tb_user where del=0 limit #{start}, #{limit}
+    </select>
+
+    <select id="findBySearch" resultMap="userMap">
+        select * from tb_user
+        where (name like CONCAT(#{search, jdbcType=VARCHAR},'%') or phone like CONCAT(#{search, jdbcType=VARCHAR},'%'))
+        and del=0 limit #{start}, #{limit}
     </select>
 
 </mapper>

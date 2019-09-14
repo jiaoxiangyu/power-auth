@@ -10,12 +10,15 @@
 </head>
 <body class="layui-layout-body">
 
-    <div class="demoTable">
-            搜索：
-            <div class="layui-inline">
-                <input class="layui-input" name="search" id="searchContent" autocomplete="off">
-            </div>
-            <button class="layui-btn" data-type="reload">搜索</button>
+    <div class="searchTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="search" id="searchContent" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+
+        <button type="button" class="layui-btn" style="float: right;">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
     </div>
 
     <table class="layui-hide" id="userMge" lay-filter="operate"></table>
@@ -83,14 +86,14 @@
                     area : [ '400px', '350px' ],
                     content : '/user/toUpdate/' + data.id,
                     end: function () {
-                        var demoReload = $('#demoReload');
+                        var searchContent = $('#searchContent');
                         //执行重载
                         table.reload('userTable', {
                             page: {
                                 curr: table.page
                             },
                             where: {
-                                search: demoReload.val()
+                                search: searchContent.val()
                             }
                         })
                     }
@@ -110,7 +113,30 @@
                     search: searchContent.val()
                 }
             });
-        }
+        };
+
+        //搜索
+        var $ = layui.$, active = {
+            reload : function() {
+                var searchContent = $('#searchContent');
+                //执行重载
+                table.reload('userTable', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        search : searchContent.val()
+                    }
+                });
+            }
+        };
+
+        $('.searchTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
 
     });
 
