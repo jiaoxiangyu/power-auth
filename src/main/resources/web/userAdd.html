@@ -9,9 +9,9 @@
         text-align: center;
         background-color: #fff;
         width: 300px;
-        height: 280px;
+        height: 330px;
         top: 30px;
-        margin-top: 10px;
+        margin-top: 20px;
     }
 </style>
 </head>
@@ -41,9 +41,17 @@
         <div class="layui-form-item" style="width:300px;">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="password" name="pwd" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                <input type="password" id="pwd1" name="pwd" lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
             </div>
         </div>
+
+        <div class="layui-form-item" style="width:300px;">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" id="pwd2"  lay-verify="required|repass" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
@@ -83,6 +91,20 @@
                 }
             });
             return false;
+        });
+
+        //自定义验证规则, 校验密码
+        form.verify({
+            pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+            ,repass: function(value){
+                var repassvalue = $('#pwd1').val();
+                if(value != repassvalue) {
+                    return '两次输入的密码不一致!';
+                }
+            }
         });
     });
 </script>
