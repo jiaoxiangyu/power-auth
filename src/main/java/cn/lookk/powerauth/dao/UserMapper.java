@@ -4,6 +4,7 @@ import cn.lookk.powerauth.po.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.Mapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -12,7 +13,7 @@ public interface UserMapper {
 
     int update(User user);
 
-    int delete(Long id);
+    int delete(Long id, LocalDateTime updateTime);
 
     User findOneById(Long id);
 

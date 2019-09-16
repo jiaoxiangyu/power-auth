@@ -41,17 +41,30 @@ public class UserCotroller {
     private IRoleService roleService;
 
     /**
-     * @title:  add
+     * @title:  toAdd
      * @description:  TODO
-     * @param user
      * @param modelAndView
      * @return  org.springframework.web.servlet.ModelAndView
      */
-    @RequestMapping(value = "add", method = RequestMethod.POST)
-    public ModelAndView add(@RequestBody User user, ModelAndView modelAndView){
-        int add = userService.add(user);
+    @RequestMapping(value = "toAdd", method = RequestMethod.GET)
+    public ModelAndView toAdd(ModelAndView modelAndView){
+        List<Role> roles=roleService.findAll();
+        logger.info("roles={}", roles);
+        modelAndView.addObject("roles", roles);
         modelAndView.setViewName("userAdd");
-       return modelAndView;
+        return modelAndView;
+    }
+
+    /**
+     * @title:  add
+     * @description:  TODO
+     * @param user
+     * @return  cn.wt.handleexception.vo.Result
+     */
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public Result add(User user){
+        userService.add(user);
+        return ResultUtil.success();
     }
 
     /**
@@ -92,10 +105,18 @@ public class UserCotroller {
     @RequestMapping(value = "del/{id}", method = RequestMethod.GET)
     public Result delete(@PathVariable("id")Long id){
         Assert.isLessThanOrEqualZero(id, 412, "id is null");
+        logger.info("delete id={}", id);
         userService.delete(id);
         return ResultUtil.success();
     }
 
+    /**
+     * @title:  toUpdate
+     * @description:  TODO
+     * @param id
+     * @param modelAndView
+     * @return  org.springframework.web.servlet.ModelAndView
+     */
     @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
     public ModelAndView toUpdate(@PathVariable Long id, ModelAndView modelAndView) {
         User user=userService.findOneById(id);

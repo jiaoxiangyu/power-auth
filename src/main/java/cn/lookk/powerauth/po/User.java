@@ -1,5 +1,7 @@
 package cn.lookk.powerauth.po;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class User {
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
     //名字
     private String name;

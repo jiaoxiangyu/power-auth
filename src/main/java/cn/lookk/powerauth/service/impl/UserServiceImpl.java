@@ -5,12 +5,15 @@ import cn.lookk.powerauth.dao.UserMapper;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.User;
 import cn.lookk.powerauth.service.IUserService;
+import cn.lookk.powerauth.util.IdWorker;
 import cn.lookk.powerauth.util.PageUtil;
 import cn.lookk.powerauth.vo.PageHelp;
+import cn.wt.handleexception.exception.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -32,15 +35,27 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Value("${worker_id}")
+    private static long workerId;
+
+    @Value("${user_datacenter_id}")
+    private static long userDatacenterId;
+
+    //IdWorker暂时放在这里，实现单例服务uid唯一性，分布式时，使用一个独立服务生成唯一ID，也可以放在这个服务中，提供权限认证和唯一ID生成
+    private static IdWorker idWorker = new IdWorker(workerId, userDatacenterId);
+
     @Override
     public int add(User user) {
+        user.setId(idWorker.nextId());
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
         return userMapper.add(user);
     }
 
     @Override
     public int update(User user) {
         Role role=roleMapper.findOneByName(user.getRole());
-        //Assert.isNull(role, 413, "role is null");
+        Assert.isNull(role, 413, "role is null");
         user.setRoleId(role.getId());
         user.setUpdateTime(LocalDateTime.now());
         return userMapper.update(user);
@@ -48,7 +63,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int delete(Long id) {
-        return userMapper.delete(id);
+        return userMapper.delete(id, LocalDateTime.now());
     }
 
     @Override

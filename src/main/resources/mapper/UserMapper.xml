@@ -16,8 +16,8 @@
         </where>
     </update>
 
-    <delete id="delete" parameterType="java.lang.Long">
-        update tb_user set del=1 where id=#{id} limit 1;
+    <delete id="delete" >
+        update tb_user set del=1, update_time=#{updateTime} where id=#{id} limit 1;
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.User" id="userMap">
@@ -48,13 +48,17 @@
     </select>
 
     <select id="find" resultMap="userMap">
-        select * from tb_user where del=0 limit #{start}, #{limit}
+        select * from tb_user where del=0
+        order by id desc
+        limit #{start}, #{limit}
     </select>
 
     <select id="findBySearch" resultMap="userMap">
         select * from tb_user
         where (name like CONCAT(#{search, jdbcType=VARCHAR},'%') or phone like CONCAT(#{search, jdbcType=VARCHAR},'%'))
-        and del=0 limit #{start}, #{limit}
+        and del=0
+        order by id desc
+        limit #{start}, #{limit}
     </select>
 
 </mapper>

@@ -10,16 +10,25 @@
 </head>
 <body class="layui-layout-body">
 
-    <div class="searchTable">
-        <div class="layui-inline">
-            <input class="layui-input" name="search" id="searchContent" autocomplete="off">
-        </div>
-        <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+    <!-- 工具集 -->
+    <div class="my-btn-box">
 
-        <button type="button" class="layui-btn" style="float: right;">
-            <i class="layui-icon">&#xe608;</i> 添加
-        </button>
+        <span class="fr" style="float: left;">
+            <div class="searchTable" >
+                <div class="layui-inline">
+                    <input class="layui-input" name="search" id="searchContent" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+            </div>
+        </span>
+
+        <span class="fl" style="float: right;">
+            <a class="layui-btn btn-add btn-default" id="btn-add"><i class="layui-icon">&#xe61f;</i>添加</a>
+        </span>
+        <!--取消float-->
+        <div style="clear: both;"> </div>
     </div>
+
 
     <table class="layui-hide" id="userMge" lay-filter="operate"></table>
 
@@ -47,11 +56,11 @@
             , cols: [[
                 {type : 'checkbox'}
                 ,{field:'id', title: 'ID', align: 'center', sort: true}
-                ,{field:'name', title: '用户名', align: 'center', sort: true}
+                ,{field:'name', title: '姓名', align: 'center', sort: true}
                 ,{field:'phone', title: '手机号', align: 'center', sort: true}
                 ,{field:'role', title: '角色', align: 'center', sort: true}
-                ,{field:'createTime', title: '创建时间', align: 'center', sort: true}
-                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true}
+                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
                 ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });
@@ -59,7 +68,7 @@
         //监听工具条
         table.on('tool(operate)', function(obj) {
             var data = obj.data;
-            if (obj.event === 'del') {
+            if (obj.event === 'del') {  //删除
                 layer.confirm('确认删除该记录吗？', function(index) {
                     var url = '/user/del/' + data.id;
                     $.ajax({
@@ -67,10 +76,15 @@
                         url : url,
                         dataType : "json",
                         success : function(res) {
-                            layer.close(index);//关闭确认删除提示弹窗
-                            layer.alert("删除成功!");
-                            //重新加载列表
-                            reloadTable(table.page);
+                            if (res.code==0) {
+                                layer.close(index);//关闭确认删除提示弹窗
+                                layer.alert("删除成功!");
+                                //重新加载列表
+                                reloadTable(table.page);
+                            }else {
+                                layer.close(index);
+                                layer.alert(res.msg)
+                            }
                         },
                         error : function(res) {
                             layer.close(index);
@@ -78,7 +92,7 @@
                         }
                     });
                 });
-            } else if (obj.event === 'edit') {
+            } else if (obj.event === 'edit') {  //修改
                 layer.open({
                     type : 2,
                     title : '修改页面',
@@ -136,7 +150,28 @@
             active[type] ? active[type].call(this) : '';
         });
 
-
+        //添加
+        $('#btn-add').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '添加页面',
+                maxmin: true, //开启最大化最小化按钮
+                area: ['400px', '350px'],
+                content: '/user/toAdd',
+                end: function () {
+                    var searchContent = $('#searchContent');
+                    //执行重载
+                    table.reload('userTable', {
+                        page: {
+                            curr: 1
+                        },
+                        where: {
+                            search: searchContent.val()
+                        }
+                    })
+                }
+            });
+        });
 
     });
 
