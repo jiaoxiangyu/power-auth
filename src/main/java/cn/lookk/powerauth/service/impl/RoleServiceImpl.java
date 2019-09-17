@@ -26,13 +26,13 @@ public class RoleServiceImpl implements IRoleService {
     private RoleMapper roleMapper;
 
     @Override
-    public int add(Role user) {
-        return roleMapper.add(user);
+    public int add(Role roel) {
+        return roleMapper.add(roel);
     }
 
     @Override
-    public int update(Role user) {
-        return roleMapper.update(user);
+    public int update(Role roel) {
+        return roleMapper.update(roel);
     }
 
     @Override

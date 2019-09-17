@@ -1,6 +1,5 @@
 package cn.lookk.powerauth.controller;
 
-import cn.lookk.powerauth.constants.ResponseEnum;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.User;
 import cn.lookk.powerauth.service.IRoleService;

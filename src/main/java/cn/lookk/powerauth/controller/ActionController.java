@@ -27,9 +27,17 @@ public class ActionController {
     private static final Logger logger = LoggerFactory.getLogger(ActionController.class);
 
     @RequestMapping(value = "/{pageName}", method = RequestMethod.GET)
-    public String action(@PathVariable(name = "pageName") String pageName, ModelAndView modelAndView) {
+    public String actionView(@PathVariable(name = "pageName") String pageName) {
         logger.info("pageName={}",pageName);
         return pageName;
+    }
+
+    @RequestMapping(value = "/{pathName}/{pageName}", method = RequestMethod.GET)
+    public String actionPathView(
+            @PathVariable(name = "pathName") String pathName,
+            @PathVariable(name = "pageName") String pageName) {
+        logger.info("pathName={}, pageName={}",pathName,pageName);
+        return pathName+"/"+pageName;
     }
 
 }

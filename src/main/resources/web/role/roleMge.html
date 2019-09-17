@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>权限认证管理平台</title>
+    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+
+</head>
+<body class="layui-layout-body">
+
+    <!-- 工具集 -->
+    <div class="my-btn-box">
+
+        <span class="fr" style="float: left;">
+            <div class="searchTable" >
+                <div class="layui-inline">
+                    <input class="layui-input" name="search" id="searchContent" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+            </div>
+        </span>
+
+        <span class="fl" style="float: right;">
+            <a class="layui-btn btn-add btn-default" id="btn-add"><i class="layui-icon">&#xe61f;</i>添加</a>
+        </span>
+        <!--取消float-->
+        <div style="clear: both;"> </div>
+    </div>
+
+
+    <table class="layui-hide" id="userMge" lay-filter="operate"></table>
+
+    <script type="text/html" id="barOperate">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+</body>
+
+<script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
+<script th:src="@{/js/jquery.min.js}" charset="utf-8"></script>
+
+<script th:inline="none">
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            id : 'userTable'
+            ,elem: '#userMge'
+            ,url:'/role/find'
+            ,method:'GET'
+            ,limit: 10
+            ,limits: [5,8,10,15,20]
+            ,page: true
+            , cols: [[
+                {type : 'checkbox'}
+                ,{field:'id', title: 'ID', align: 'center', sort: true}
+                ,{field:'name', title: '姓名', align: 'center', sort: true}
+                ,{field:'describe', title: '描述', align: 'center', sort: true}
+                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(operate)', function(obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {  //删除
+                layer.confirm('确认删除该记录吗？', function(index) {
+                    var url = '/user/del/' + data.id;
+                    $.ajax({
+                        type : "GET",
+                        url : url,
+                        dataType : "json",
+                        success : function(res) {
+                            if (res.code==0) {
+                                layer.close(index);//关闭确认删除提示弹窗
+                                layer.alert("删除成功!");
+                                //重新加载列表
+                                reloadTable(table.page);
+                            }else {
+                                layer.close(index);
+                                layer.alert(res.msg)
+                            }
+                        },
+                        error : function(res) {
+                            layer.close(index);
+                            layer.alert(res.msg)
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {  //修改
+                layer.open({
+                    type : 2,
+                    title : '修改页面',
+                    maxmin : true, //开启最大化最小化按钮
+                    area : [ '400px', '350px' ],
+                    content : '/user/toUpdate/' + data.id,
+                    end: function () {
+                        var searchContent = $('#searchContent');
+                        //执行重载
+                        table.reload('userTable', {
+                            page: {
+                                curr: table.page
+                            },
+                            where: {
+                                search: searchContent.val()
+                            }
+                        })
+                    }
+                });
+            }
+        });
+
+        //重新加载列表
+        var reloadTable = function (_page) {
+            var searchContent = $('#searchContent');
+            //执行重载
+            table.reload('userTable', {
+                page: {
+                    curr: _page
+                },
+                where: {
+                    search: searchContent.val()
+                }
+            });
+        };
+
+        //搜索
+        var $ = layui.$, active = {
+            reload : function() {
+                var searchContent = $('#searchContent');
+                //执行重载
+                table.reload('userTable', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        search : searchContent.val()
+                    }
+                });
+            }
+        };
+
+        $('.searchTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //添加
+        $('#btn-add').on('click', function () {
+            layer.open({
+                type: 2,
+                title: '添加页面',
+                maxmin: true, //开启最大化最小化按钮
+                area: ['400px', '400px'],
+                content: '/user/toAdd',
+                end: function () {
+                    var searchContent = $('#searchContent');
+                    //执行重载
+                    table.reload('userTable', {
+                        page: {
+                            curr: 1
+                        },
+                        where: {
+                            search: searchContent.val()
+                        }
+                    })
+                }
+            });
+        });
+
+    });
+
+</script>
+</html>
