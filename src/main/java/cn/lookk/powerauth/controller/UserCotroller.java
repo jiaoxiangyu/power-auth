@@ -50,7 +50,7 @@ public class UserCotroller {
         List<Role> roles=roleService.findAll();
         logger.info("roles={}", roles);
         modelAndView.addObject("roles", roles);
-        modelAndView.setViewName("userAdd");
+        modelAndView.setViewName("user/userAdd");
         return modelAndView;
     }
 
@@ -124,7 +124,7 @@ public class UserCotroller {
         List<Role> roles=roleService.findAll();
         logger.info("roles={}",roles);
         modelAndView.addObject("roles",roles);
-        modelAndView.setViewName("userUpdate");
+        modelAndView.setViewName("user/userUpdate");
         return modelAndView;
     }
 
