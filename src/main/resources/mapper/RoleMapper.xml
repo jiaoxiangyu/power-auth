@@ -19,7 +19,9 @@
     <resultMap type="cn.lookk.powerauth.po.Role" id="roleMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="describe" column="phone"/>
+        <result property="describe" column="describe"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <select id="findOneById" resultType="cn.lookk.powerauth.po.Role">
@@ -34,12 +36,25 @@
         select count(*) from  tb_role
     </select>
 
+    <select id="countBySearch" resultType="java.lang.Integer">
+        /*naem建有索引*/
+        select count(*) from  tb_user
+        where name like CONCAT(#{search, jdbcType=VARCHAR},'%')
+    </select>
+
     <select id="find" resultMap="roleMap">
-        select * from tb_role where limit #{start}, #{limit}
+        select * from tb_role limit #{start}, #{limit}
     </select>
 
     <select id="findAll" resultMap="roleMap">
         select * from tb_role
+    </select>
+
+    <select id="findBySearch" resultMap="roleMap">
+        select * from tb_role
+        where name like CONCAT(#{search, jdbcType=VARCHAR},'%')
+        order by id desc
+        limit #{start}, #{limit}
     </select>
 
 </mapper>

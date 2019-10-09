@@ -18,7 +18,11 @@ public interface RoleMapper {
 
     int count();
 
-    List<Role> find(int start, int limit);
+    int countBySearch(String search);
 
     List<Role> findAll();
+
+    List<Role> find(int start, int limit);
+
+    List<Role> findBySearch(int start, int limit, String search);
 }

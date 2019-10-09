@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * @ClassName: Role
  * @Description: TODO
@@ -19,4 +21,8 @@ public class Role {
     private Integer id;
     private String name;
     private String describe;
+    //创建时间
+    private LocalDateTime createTime;
+    //跟新时间
+    private LocalDateTime updateTime;
 }

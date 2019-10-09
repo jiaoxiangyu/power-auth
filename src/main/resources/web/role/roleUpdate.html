@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+  <title>title</title>
+  <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+<style>
+    #form{
+        text-align: center;
+        background-color: #fff;
+        width: 300px;
+        height: 280px;
+        top: 30px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+<div id="form">
+    <form class="layui-form">
+        <input type="hidden" id="id" name="id" th:value="${role.id}">
+        <div class="layui-form-item" style="width:300px;">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" th:value="${role.name}">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width:300px;">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入描述" autocomplete="off" class="layui-input" th:value="${role.describe}">
+            </div>
+        </div>
+       <!-- <div class="layui-form-item" style="width:300px;">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+                <select name="role" >
+                    <option th:each="privilege,privilegeStat:${privileges}" th:selected="${user.role} == ${role.name}" th:value="${role.name}" th:text="${role.name}"></option>
+                </select>
+            </div>
+        </div>-->
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['table','form'], function() {
+        var table = layui.table;
+        var form = layui.form;
+        form.on('submit(*)', function() {
+            var url = "/role/update";
+            var params = $("form").serializeArray();
+            $.ajax({
+                type : "POST",
+                url : url,
+                data : params,
+                dataType : "json",
+                success : function(res) {
+                    if (res.code==0) {
+                        layer.alert("修改成功！", {
+                            yes: function (index) {
+                                window.parent.$('.layui-layer-close').trigger('click');//重新回到父窗口
+                            }
+                        });
+                        return false;
+                    }else {
+                        layer.alert(res.msg);
+                    }
+                },
+                error : function(res) {
+                    layer.alert(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

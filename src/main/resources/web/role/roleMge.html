@@ -56,7 +56,7 @@
             , cols: [[
                 {type : 'checkbox'}
                 ,{field:'id', title: 'ID', align: 'center', sort: true}
-                ,{field:'name', title: '姓名', align: 'center', sort: true}
+                ,{field:'name', title: '名称', align: 'center', sort: true}
                 ,{field:'describe', title: '描述', align: 'center', sort: true}
                 ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
                 ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
@@ -69,7 +69,7 @@
             var data = obj.data;
             if (obj.event === 'del') {  //删除
                 layer.confirm('确认删除该记录吗？', function(index) {
-                    var url = '/user/del/' + data.id;
+                    var url = '/role/del/' + data.id;
                     $.ajax({
                         type : "GET",
                         url : url,
@@ -97,7 +97,7 @@
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
                     area : [ '400px', '350px' ],
-                    content : '/user/toUpdate/' + data.id,
+                    content : '/role/toUpdate/' + data.id,
                     end: function () {
                         var searchContent = $('#searchContent');
                         //执行重载
@@ -156,7 +156,7 @@
                 title: '添加页面',
                 maxmin: true, //开启最大化最小化按钮
                 area: ['400px', '400px'],
-                content: '/user/toAdd',
+                content: '/role/toAdd',
                 end: function () {
                     var searchContent = $('#searchContent');
                     //执行重载

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * @ClassName: RolePrivilege
  * @Description: TODO
@@ -19,6 +21,12 @@ public class RolePrivilege {
     private Integer id;
     private Integer roleId;
     private Integer privilegeId;
+    private String privilegeName;
+    private String privilegeUrl;
     //是否开启
     private Boolean status;
+    //创建时间
+    private LocalDateTime createTime;
+    //跟新时间
+    private LocalDateTime updateTime;
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lookk.powerauth.dao.RolePrivilegeMapper">
+
+    <insert id="add" parameterType="cn.lookk.powerauth.po.RolePrivilege">
+        insert  into  tb_role_privilege (role_id, privilege_id, privilege_url, create_time, update_time)
+        values (#{roleId}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
+    </insert>
+
+    <update id="update" parameterType="cn.lookk.powerauth.po.RolePrivilege">
+       update tb_role_privilege set name = #{name}, url=#{url},describe=#{describe} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete tb_role_privilege where id=#{id} limit 1;
+    </delete>
+
+    <resultMap type="cn.lookk.powerauth.po.RolePrivilege" id="rolePrivilegeMap">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="privilegeId" column="privilege_id"/>
+        <result property="privilegeName" column="privilege_name"/>
+        <result property="privilegeUrl" column="privilege_url"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="findOneById" resultType="cn.lookk.powerauth.po.RolePrivilege">
+        select * from  tb_role_privilege where id=#{id}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from tb_role_privilege
+    </select>
+
+    <select id="countBySearch" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from tb_role_privilege where name=#{search}
+    </select>
+
+    <select id="findByRoleId" resultMap="rolePrivilegeMap">
+        select * from tb_role_privilege
+    </select>
+
+    <select id="find" resultMap="rolePrivilegeMap">
+        select * from tb_role_privilege limit #{start}, #{limit}
+    </select>
+
+    <select id="findBySearch" resultMap="rolePrivilegeMap">
+        select * from tb_role_privilege
+        where name like CONCAT(#{search, jdbcType=VARCHAR},'%')
+        order by id desc
+        limit #{start}, #{limit}
+    </select>
+
+
+</mapper>
