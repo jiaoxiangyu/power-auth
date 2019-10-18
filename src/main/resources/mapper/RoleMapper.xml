@@ -3,23 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lookk.powerauth.dao.RoleMapper">
 
-    <insert id="add" parameterType="cn.lookk.powerauth.po.Role">
-        insert  into  tb_role (id , name, describe)
-        values (#{id}, #{name}, #{descibe})
+    <insert id="add" parameterType="cn.lookk.powerauth.po.Role" useGeneratedKeys="true" keyProperty="id" >
+        insert  into  tb_role
+        (name, description)
+        values (#{name}, #{description})
     </insert>
 
    <update id="update" parameterType="cn.lookk.powerauth.po.Role">
-       update tb_role set name = #{name}, describe=#{describe} where id=#{id}
+       update tb_role set name = #{name}, description=#{description}, update_time=#{updateTime} where id=#{id}
     </update>
 
-    <delete id="delete" parameterType="java.lang.Long">
-        delete tb_role where id=#{id} limit 1;
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from tb_role where id=#{id} limit 1;
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.Role" id="roleMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="describe" column="describe"/>
+        <result property="description" column="description"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>

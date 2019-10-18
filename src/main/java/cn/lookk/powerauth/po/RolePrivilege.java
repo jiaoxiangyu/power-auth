@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 public class RolePrivilege {
     private Integer id;
     private Integer roleId;
+    private String roleName;
     private Integer privilegeId;
     private String privilegeName;
     private String privilegeUrl;

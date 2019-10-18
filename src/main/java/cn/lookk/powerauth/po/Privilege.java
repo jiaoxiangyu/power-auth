@@ -19,5 +19,5 @@ public class Privilege {
     private Integer id;
     private String name;
     private String url;
-    private String describe;
+    private String description;
 }

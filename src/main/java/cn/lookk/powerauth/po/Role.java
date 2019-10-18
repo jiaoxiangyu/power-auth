@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class Role {
     private Integer id;
     private String name;
-    private String describe;
+    private String description;
     //创建时间
     private LocalDateTime createTime;
     //跟新时间

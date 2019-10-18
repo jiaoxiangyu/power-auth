@@ -1,6 +1,7 @@
 package cn.lookk.powerauth.dao;
 
 import cn.lookk.powerauth.po.Privilege;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface PrivilegeMapper {
     int countBySearch(String search);
 
     List<Privilege> findAll();
+
+    List<Privilege> findByIds(@Param("ids") Integer[] ids);
 
     List<Privilege> find(int page, int limit);
 

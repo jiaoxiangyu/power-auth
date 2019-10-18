@@ -4,23 +4,23 @@
 <mapper namespace="cn.lookk.powerauth.dao.PrivilegeMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.Privilege">
-        insert  into  tb_privilege (name, url, describe)
-        values (#{name}, #{url},#{descibe})
+        insert  into  tb_privilege (name, url, description)
+        values (#{name}, #{url},#{description})
     </insert>
 
     <update id="update" parameterType="cn.lookk.powerauth.po.Privilege">
-       update tb_privilege set name = #{name}, url=#{url},describe=#{describe} where id=#{id}
+       update tb_privilege set name = #{name}, url=#{url},description=#{description} where id=#{id}
     </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
-        delete tb_privilege where id=#{id} limit 1;
+        delete from tb_privilege where id=#{id} limit 1;
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.Privilege" id="privilegeMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="url" column="url"/>
-        <result property="describe" column="describe"/>
+        <result property="description" column="description"/>
     </resultMap>
 
     <select id="findOneById" resultType="cn.lookk.powerauth.po.Privilege">
@@ -37,6 +37,14 @@
 
     <select id="findAll" resultMap="privilegeMap">
         select * from tb_privilege
+    </select>
+
+    <select id="findByIds" resultMap="privilegeMap" parameterType="java.util.List">
+        select * from tb_privilege where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
     </select>
 
     <select id="find" resultMap="privilegeMap">

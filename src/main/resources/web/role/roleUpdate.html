@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
   <title>title</title>
   <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+  <link rel="stylesheet" th:href="@{/js/layui/css/formSelects-v4.css}"/>
 <style>
     #form{
         text-align: center;
@@ -28,7 +29,7 @@
         <div class="layui-form-item" style="width:300px;">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
-                <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入描述" autocomplete="off" class="layui-input" th:value="${role.describe}">
+                <input type="text" name="description" lay-verify="required|phone" placeholder="请输入描述" autocomplete="off" class="layui-input" th:value="${role.description}">
             </div>
         </div>
        <!-- <div class="layui-form-item" style="width:300px;">
@@ -39,6 +40,14 @@
                 </select>
             </div>
         </div>-->
+        <div class="layui-form-item" style="width:300px;">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+                <select name="privilege" xm-select="id" xm-select-search="" xm-select-direction="down" lay-verify="required">
+                    <option th:each="privilege,privilegeStat:${privileges}" th:value="${privilege.id}" th:text="${privilege.name}"></option>
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
@@ -50,9 +59,17 @@
 <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
 <script type="text/javascript" th:inline="none">
-    layui.use(['table','form'], function() {
+    //全局定义一次, 加载formSelects
+    layui.config({
+        base: '/js/layui/' //此处路径请自行处理, 可以使用绝对路径
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+
+    layui.use(['table','form','jquery', 'formSelects'], function() {
         var table = layui.table;
         var form = layui.form;
+        var formSelects=layui.formSelects;
         form.on('submit(*)', function() {
             var url = "/role/update";
             var params = $("form").serializeArray();

@@ -13,6 +13,8 @@ public interface IPrivilegeService {
 
     List<Privilege> findAll();
 
+    List<Privilege> findByIds(Integer[] ids);
+
     Privilege findOneById(int id);
 
     PageHelp find(String search, int page, int limit);

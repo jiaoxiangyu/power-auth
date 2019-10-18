@@ -6,7 +6,7 @@ import cn.lookk.powerauth.vo.PageHelp;
 import java.util.List;
 
 public interface IRoleService {
-    int add(Role roel);
+    int add(Role roel, Integer[] privilegeIds);
 
     int update(Role roel);
 

@@ -3,11 +3,14 @@ package cn.lookk.powerauth.service.impl;
 import cn.lookk.powerauth.dao.RoleMapper;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.User;
+import cn.lookk.powerauth.service.IRolePrivilegeService;
 import cn.lookk.powerauth.service.IRoleService;
 import cn.lookk.powerauth.util.PageUtil;
+import cn.lookk.powerauth.util.StringUtil;
 import cn.lookk.powerauth.vo.PageHelp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,10 +27,15 @@ public class RoleServiceImpl implements IRoleService {
 
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private IRolePrivilegeService rolePrivilegeService;
 
     @Override
-    public int add(Role roel) {
-        return roleMapper.add(roel);
+    @Transactional(rollbackFor = Exception.class)
+    public int add(Role roel, Integer[] privilegeIds) {
+        int roleId=roleMapper.add(roel);
+        rolePrivilegeService.addOfRole(roleId, privilegeIds);
+        return 1;
     }
 
     @Override

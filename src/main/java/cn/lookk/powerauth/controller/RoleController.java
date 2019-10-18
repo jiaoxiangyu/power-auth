@@ -2,9 +2,12 @@ package cn.lookk.powerauth.controller;
 
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.po.Role;
+import cn.lookk.powerauth.po.RolePrivilege;
 import cn.lookk.powerauth.service.IPrivilegeService;
+import cn.lookk.powerauth.service.IRolePrivilegeService;
 import cn.lookk.powerauth.service.IRoleService;
 import cn.lookk.powerauth.util.PageResultUtil;
+import cn.lookk.powerauth.util.StringUtil;
 import cn.lookk.powerauth.vo.PageHelp;
 import cn.lookk.powerauth.vo.PageResult;
 import cn.wt.handleexception.exception.Assert;
@@ -37,6 +40,8 @@ public class RoleController {
     private IRoleService roleService;
     @Autowired
     private IPrivilegeService privilegeService;
+    @Autowired
+    private IRolePrivilegeService rolePrivilegeService;
 
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public PageResult find(@RequestParam(defaultValue = "1", name = "page") int page,
@@ -66,12 +71,14 @@ public class RoleController {
     /**
      * @title:  add
      * @description:  TODO
-     * @param rloe
+     * @param role
      * @return  cn.wt.handleexception.vo.Result
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public Result add(Role rloe){
-        roleService.add(rloe);
+    public Result add(Role role, String privilege){
+        System.out.println("privilege="+privilege);
+        int roleId=roleService.add(role, StringUtil.toInts(privilege.split(",")));
+
         return ResultUtil.success();
     }
 
@@ -101,9 +108,11 @@ public class RoleController {
         Role role=roleService.findOneById(id);
         logger.info("role={}",role);
         List<Privilege> privileges = privilegeService.findAll();
+        List<RolePrivilege> rolePrivileges = rolePrivilegeService.findByRoleId(id);
         logger.info("privileges={}", privileges);
         modelAndView.addObject("role",role);
         modelAndView.addObject("privileges",privileges);
+        modelAndView.addObject("rolePrivileges",rolePrivileges);
         modelAndView.setViewName("role/roleUpdate");
         return modelAndView;
     }

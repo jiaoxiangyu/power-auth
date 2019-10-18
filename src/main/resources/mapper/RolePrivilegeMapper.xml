@@ -4,21 +4,31 @@
 <mapper namespace="cn.lookk.powerauth.dao.RolePrivilegeMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.RolePrivilege">
-        insert  into  tb_role_privilege (role_id, privilege_id, privilege_url, create_time, update_time)
-        values (#{roleId}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
+        insert  into  tb_role_privilege (role_id, role_name, privilege_id, privilege_url, create_time, update_time)
+        values (#{roleId}, #{roleName}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
     </insert>
+
+    <insert id="addBatch" parameterType="java.util.List">
+        insert  into  tb_role_privilege (role_id, role_name, privilege_id, privilege_url, create_time, update_time)
+        values
+        <foreach collection="rolePrivileges" item="item" index="index" separator=",">
+            (#{roleId}, #{roleName}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
+        </foreach>
+    </insert>
+
 
     <update id="update" parameterType="cn.lookk.powerauth.po.RolePrivilege">
        update tb_role_privilege set name = #{name}, url=#{url},describe=#{describe} where id=#{id}
     </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
-        delete tb_role_privilege where id=#{id} limit 1;
+        delete from tb_role_privilege where id=#{id} limit 1;
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.RolePrivilege" id="rolePrivilegeMap">
         <result property="id" column="id"/>
         <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
         <result property="privilegeId" column="privilege_id"/>
         <result property="privilegeName" column="privilege_name"/>
         <result property="privilegeUrl" column="privilege_url"/>

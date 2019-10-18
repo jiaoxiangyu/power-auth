@@ -1,11 +1,14 @@
 package cn.lookk.powerauth.dao;
 
 import cn.lookk.powerauth.po.RolePrivilege;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface RolePrivilegeMapper {
     int add(RolePrivilege rolePrivilege);
+
+    int addBatch(@Param("rolePrivileges")List<RolePrivilege> rolePrivileges);
 
     int update(RolePrivilege rolePrivilege);
 

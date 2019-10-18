@@ -46,6 +46,11 @@ public class PrivilegeServiceImpl implements IPrivilegeService {
     }
 
     @Override
+    public List<Privilege> findByIds(Integer[] ids) {
+        return privilegeMapper.findByIds(ids);
+    }
+
+    @Override
     public Privilege findOneById(int id) {
         return privilegeMapper.findOneById(id);
     }
