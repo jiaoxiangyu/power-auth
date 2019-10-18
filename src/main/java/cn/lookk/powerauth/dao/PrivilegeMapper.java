@@ -22,8 +22,8 @@ public interface PrivilegeMapper {
 
     List<Privilege> findByIds(@Param("ids") Integer[] ids);
 
-    List<Privilege> find(int page, int limit);
+    List<Privilege> find(int start, int limit);
 
-    List<Privilege> findBySearch(int start, int limit, String search);
+    List<Privilege> findBySearch(@Param("start")int start, @Param("limit")int limit, @Param("search")String search);
 
 }

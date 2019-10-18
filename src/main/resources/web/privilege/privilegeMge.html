@@ -30,7 +30,7 @@
     </div>
 
 
-    <table class="layui-hide" id="roleMge" lay-filter="operate"></table>
+    <table class="layui-hide" id="privilegeMge" lay-filter="operate"></table>
 
     <script type="text/html" id="barOperate">
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
@@ -46,9 +46,9 @@
     layui.use('table', function(){
         var table = layui.table;
         table.render({
-            id : 'roleTable'
-            ,elem: '#roleMge'
-            ,url:'/role/find'
+            id : 'privilegeTable'
+            ,elem: '#privilegeMge'
+            ,url:'/privilege/find'
             ,method:'GET'
             ,limit: 10
             ,limits: [5,8,10,15,20]
@@ -57,9 +57,8 @@
                 {type : 'checkbox'}
                 ,{field:'id', title: 'ID', align: 'center', sort: true}
                 ,{field:'name', title: '名称', align: 'center', sort: true}
+                ,{field:'url', title: '路径', align: 'center', sort: true}
                 ,{field:'description', title: '描述', align: 'center', sort: true}
-                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
-                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
                 ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });
@@ -69,7 +68,7 @@
             var data = obj.data;
             if (obj.event === 'del') {  //删除
                 layer.confirm('确认删除该记录吗？', function(index) {
-                    var url = '/role/del/' + data.id;
+                    var url = '/privilege/del/' + data.id;
                     $.ajax({
                         type : "GET",
                         url : url,
@@ -97,11 +96,11 @@
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
                     area : [ '400px', '350px' ],
-                    content : '/role/toUpdate/' + data.id,
+                    content : '/privilege/toUpdate/' + data.id,
                     end: function () {
                         var searchContent = $('#searchContent');
                         //执行重载
-                        table.reload('roleTable', {
+                        table.reload('privilegeTable', {
                             page: {
                                 curr: table.page
                             },
@@ -118,7 +117,7 @@
         var reloadTable = function (_page) {
             var searchContent = $('#searchContent');
             //执行重载
-            table.reload('roleTable', {
+            table.reload('privilegeTable', {
                 page: {
                     curr: _page
                 },
@@ -133,7 +132,7 @@
             reload : function() {
                 var searchContent = $('#searchContent');
                 //执行重载
-                table.reload('roleTable', {
+                table.reload('privilegeTable', {
                     page : {
                         curr : 1
                     },
@@ -156,11 +155,11 @@
                 title: '添加页面',
                 maxmin: true, //开启最大化最小化按钮
                 area: ['400px', '400px'],
-                content: '/role/toAdd',
+                content: '/action/privilege/privilegeAdd',
                 end: function () {
                     var searchContent = $('#searchContent');
                     //执行重载
-                    table.reload('roleTable', {
+                    table.reload('privilegeTable', {
                         page: {
                             curr: 1
                         },

@@ -22,15 +22,15 @@
             </div>
         </span>
 
-        <span class="fl" style="float: right;">
+       <!-- <span class="fl" style="float: right;">
             <a class="layui-btn btn-add btn-default" id="btn-add"><i class="layui-icon">&#xe61f;</i>添加</a>
-        </span>
+        </span>-->
         <!--取消float-->
         <div style="clear: both;"> </div>
     </div>
 
 
-    <table class="layui-hide" id="roleMge" lay-filter="operate"></table>
+    <table class="layui-hide" id="rolePrivilegeMge" lay-filter="operate"></table>
 
     <script type="text/html" id="barOperate">
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
@@ -46,9 +46,9 @@
     layui.use('table', function(){
         var table = layui.table;
         table.render({
-            id : 'roleTable'
-            ,elem: '#roleMge'
-            ,url:'/role/find'
+            id : 'rolePrivilegeTable'
+            ,elem: '#rolePrivilegeMge'
+            ,url:'/rolePrivilege/find'
             ,method:'GET'
             ,limit: 10
             ,limits: [5,8,10,15,20]
@@ -56,10 +56,10 @@
             , cols: [[
                 {type : 'checkbox'}
                 ,{field:'id', title: 'ID', align: 'center', sort: true}
-                ,{field:'name', title: '名称', align: 'center', sort: true}
-                ,{field:'description', title: '描述', align: 'center', sort: true}
-                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
-                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'roleName', title: '角色名称', align: 'center', sort: true}
+                ,{field:'privilegeName', title: '权限名称', align: 'center', sort: true}
+                ,{field:'privilegeUrl', title: '权限路径', align: 'center', sort: true}
+                ,{field:'status', title: '是否启用', align: 'center', sort: true}
                 ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });
@@ -69,7 +69,7 @@
             var data = obj.data;
             if (obj.event === 'del') {  //删除
                 layer.confirm('确认删除该记录吗？', function(index) {
-                    var url = '/role/del/' + data.id;
+                    var url = '/rolePrivilege/del/' + data.id;
                     $.ajax({
                         type : "GET",
                         url : url,
@@ -97,11 +97,11 @@
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
                     area : [ '400px', '350px' ],
-                    content : '/role/toUpdate/' + data.id,
+                    content : '/rolePrivilege/toUpdate/' + data.id,
                     end: function () {
                         var searchContent = $('#searchContent');
                         //执行重载
-                        table.reload('roleTable', {
+                        table.reload('rolePrivilegeTable', {
                             page: {
                                 curr: table.page
                             },
@@ -118,7 +118,7 @@
         var reloadTable = function (_page) {
             var searchContent = $('#searchContent');
             //执行重载
-            table.reload('roleTable', {
+            table.reload('rolePrivilegeTable', {
                 page: {
                     curr: _page
                 },
@@ -133,7 +133,7 @@
             reload : function() {
                 var searchContent = $('#searchContent');
                 //执行重载
-                table.reload('roleTable', {
+                table.reload('rolePrivilegeTable', {
                     page : {
                         curr : 1
                     },
@@ -147,29 +147,6 @@
         $('.searchTable .layui-btn').on('click', function(){
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
-        });
-
-        //添加
-        $('#btn-add').on('click', function () {
-            layer.open({
-                type: 2,
-                title: '添加页面',
-                maxmin: true, //开启最大化最小化按钮
-                area: ['400px', '400px'],
-                content: '/role/toAdd',
-                end: function () {
-                    var searchContent = $('#searchContent');
-                    //执行重载
-                    table.reload('roleTable', {
-                        page: {
-                            curr: 1
-                        },
-                        where: {
-                            search: searchContent.val()
-                        }
-                    })
-                }
-            });
         });
 
     });

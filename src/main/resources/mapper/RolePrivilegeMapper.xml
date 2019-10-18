@@ -4,15 +4,15 @@
 <mapper namespace="cn.lookk.powerauth.dao.RolePrivilegeMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.RolePrivilege">
-        insert  into  tb_role_privilege (role_id, role_name, privilege_id, privilege_url, create_time, update_time)
-        values (#{roleId}, #{roleName}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
+        insert  into  tb_role_privilege (role_id, role_name, privilege_id,  privilege_name, privilege_url)
+        values (#{roleId}, #{roleName}, #{privilegeId}, #{privilegeName}, #{privilegeUrl})
     </insert>
 
     <insert id="addBatch" parameterType="java.util.List">
-        insert  into  tb_role_privilege (role_id, role_name, privilege_id, privilege_url, create_time, update_time)
+        insert  into  tb_role_privilege (role_id, role_name, privilege_id, privilege_name, privilege_url, status)
         values
         <foreach collection="rolePrivileges" item="item" index="index" separator=",">
-            (#{roleId}, #{roleName}, #{privilegeId},#{privilegeName},#{privilegeUrl},#{createTime},#{updateTime})
+            (#{item.roleId}, #{item.roleName}, #{item.privilegeId}, #{item.privilegeName}, #{item.privilegeUrl}, #{item.status})
         </foreach>
     </insert>
 

@@ -50,11 +50,12 @@ public class RolePrivilegeServiceImpl implements IRolePrivilegeService {
         List<RolePrivilege> rolePrivileges = new ArrayList<>();
         for (Privilege privilege : privileges) {
             RolePrivilege rolePrivilege = new RolePrivilege();
-            rolePrivilege.setRoleId(role.getId());
+            rolePrivilege.setRoleId(roleId);
             rolePrivilege.setRoleName(role.getName());
             rolePrivilege.setPrivilegeId(privilege.getId());
             rolePrivilege.setPrivilegeName(privilege.getName());
             rolePrivilege.setPrivilegeUrl(privilege.getUrl());
+            rolePrivilege.setStatus(true);
             rolePrivileges.add(rolePrivilege);
         }
         addBatch(rolePrivileges);
