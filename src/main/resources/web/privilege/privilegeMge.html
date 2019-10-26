@@ -32,6 +32,36 @@
 
     <table class="layui-hide" id="privilegeMge" lay-filter="operate"></table>
 
+    <div class="site-text" id="form" style="display: none; margin: 5%;">
+        <form class="layui-form">
+            <input type="hidden" id="id" name="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block" style="width: 50%;">
+                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">路径</label>
+                <div class="layui-input-block" style="width: 50%;">
+                    <input type="text" id="url" name="url" lay-verify="required" placeholder="请输入路径" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block" style="width: 50%;">
+                    <input type="text" id="description" name="description" lay-verify="required" placeholder="请输入描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+           <!-- <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>-->
+        </form>
+    </div>
+
     <script type="text/html" id="barOperate">
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -43,23 +73,26 @@
 <script th:src="@{/js/jquery.min.js}" charset="utf-8"></script>
 
 <script th:inline="none">
-    layui.use('table', function(){
+    layui.use(['table','form','element'], function(){
         var table = layui.table;
+        var form = layui.form;
+        var element = layui.element;
+
         table.render({
-            id : 'privilegeTable'
-            ,elem: '#privilegeMge'
-            ,url:'/privilege/find'
-            ,method:'GET'
-            ,limit: 10
-            ,limits: [5,8,10,15,20]
-            ,page: true
-            , cols: [[
-                {type : 'checkbox'}
-                ,{field:'id', title: 'ID', align: 'center', sort: true}
-                ,{field:'name', title: '名称', align: 'center', sort: true}
-                ,{field:'url', title: '路径', align: 'center', sort: true}
-                ,{field:'description', title: '描述', align: 'center', sort: true}
-                ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
+            id : 'privilegeTable',
+            elem: '#privilegeMge',
+            url:'/privilege/find',
+            method:'GET',
+            limit: 10,
+            limits: [5,8,10,15,20],
+            page: true,
+            cols: [[
+                {type : 'checkbox'},
+                {field:'id', title: 'ID', align: 'center', sort: true},
+                {field:'name', title: '名称', align: 'center', sort: true},
+                {field:'url', title: '路径', align: 'center', sort: true},
+                {field:'description', title: '描述', align: 'center', sort: true},
+                {field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });
 
@@ -92,22 +125,38 @@
                 });
             } else if (obj.event === 'edit') {  //修改
                 layer.open({
-                    type : 2,
+                    type : 1,
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
-                    area : [ '400px', '350px' ],
-                    content : '/privilege/toUpdate/' + data.id,
-                    end: function () {
-                        var searchContent = $('#searchContent');
-                        //执行重载
-                        table.reload('privilegeTable', {
-                            page: {
-                                curr: table.page
+                    area : [ '400px', '285px' ],
+                    btn: ['确定', '取消'],
+                    content:$("#form"),  //弹窗路径
+                    success:function(layero,index){
+                        $('#id').val(data.id);
+                        $('#name').val(data.name);
+                        $('#url').val(data.url);
+                        $('#description').val(data.description);
+                    },
+                    yes:function(index, layero) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/privilege/update",
+                            data: $("form").serializeArray(),
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.close(index);//关闭确认删除提示弹窗
+                                    layer.alert("修改成功!");
+                                    //重新加载列表
+                                    reloadTable(table.page);
+                                } else {
+                                    layer.alert(res.msg);
+                                }
                             },
-                            where: {
-                                search: searchContent.val()
+                            error: function (res) {
+                                layer.alert(res.msg);
                             }
-                        })
+                        });
                     }
                 });
             }
@@ -151,22 +200,32 @@
         //添加
         $('#btn-add').on('click', function () {
             layer.open({
-                type: 2,
+                type: 1,
                 title: '添加页面',
                 maxmin: true, //开启最大化最小化按钮
-                area: ['400px', '400px'],
-                content: '/action/privilege/privilegeAdd',
-                end: function () {
-                    var searchContent = $('#searchContent');
-                    //执行重载
-                    table.reload('privilegeTable', {
-                        page: {
-                            curr: 1
+                area: ['400px', '285px'],
+                btn: ['确定', '取消'],
+                content:$("#form"),  //弹窗路径
+                yes:function(index, layero) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/privilege/add",
+                        data: $("form").serializeArray(),
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layer.close(index);//关闭确认删除提示弹窗
+                                layer.alert("修改成功!");
+                                //重新加载列表
+                                reloadTable(table.page);
+                            } else {
+                                layer.alert(res.msg);
+                            }
                         },
-                        where: {
-                            search: searchContent.val()
+                        error: function (res) {
+                            layer.alert(res.msg);
                         }
-                    })
+                    });
                 }
             });
         });

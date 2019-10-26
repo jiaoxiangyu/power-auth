@@ -60,14 +60,14 @@ public class RolePrivilegeController {
     }
 
     /**
-     * @title:  toUpdate
+     * @title:  get
      * @description:  TODO
      * @param id
      * @param modelAndView
      * @return  org.springframework.web.servlet.ModelAndView
      */
-    @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
-    public ModelAndView toUpdate(@PathVariable int id, ModelAndView modelAndView) {
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+    public ModelAndView get(@PathVariable int id, ModelAndView modelAndView) {
         RolePrivilege rolePrivilege=rolePrivilegeService.findOneById(id);
         logger.info("rolePrivilege={}",rolePrivilege);
         modelAndView.addObject("rolePrivilege",rolePrivilege);

@@ -88,22 +88,6 @@ public class PrivilegeController {
     }
 
     /**
-     * @title:  toUpdate
-     * @description:  TODO
-     * @param id
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
-     */
-    @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
-    public ModelAndView toUpdate(@PathVariable int id, ModelAndView modelAndView) {
-        Privilege privilege=privilegeService.findOneById(id);
-        logger.info("privilege={}",privilege);
-        modelAndView.addObject("privilege",privilege);
-        modelAndView.setViewName("privilege/privilegeUpdate");
-        return modelAndView;
-    }
-
-    /**
      * @title:  update
      * @description:  TODO
      * @param privilege

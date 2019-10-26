@@ -32,14 +32,6 @@
                 <input type="text" name="description" lay-verify="required|phone" placeholder="请输入描述" autocomplete="off" class="layui-input" th:value="${role.description}">
             </div>
         </div>
-       <!-- <div class="layui-form-item" style="width:300px;">
-            <label class="layui-form-label">权限</label>
-            <div class="layui-input-block">
-                <select name="role" >
-                    <option th:each="privilege,privilegeStat:${privileges}" th:selected="${user.role} == ${role.name}" th:value="${role.name}" th:text="${role.name}"></option>
-                </select>
-            </div>
-        </div>-->
         <div class="layui-form-item" style="width:300px;">
             <label class="layui-form-label">权限</label>
             <div class="layui-input-block">
@@ -70,6 +62,35 @@
         var table = layui.table;
         var form = layui.form;
         var formSelects=layui.formSelects;
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "${pageContext.request.contextPath}/***/***",
+                dataType: "json",
+                cache: false,
+                async: false,
+                success: function (data) {
+                    var unitType = [];
+                    unitType = data.unittypy.split(",");
+                    for (var j = 0; j < unitType.length; j++) {
+                        var unitTypeCheckbox = $("input[name='unitTypy']");
+                        for (var i = 0; i < unitTypeCheckbox.length; i++) {
+                            if (unitTypeCheckbox[i].title == unitType[j]) {
+                                unitTypeCheckbox[i].value = unitType[j];
+                                unitTypeCheckbox[i].checked = true;
+                            }
+                        }
+                        form.render();  //更新渲染
+                    }
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                },
+                ifModified: false,
+                error: function () {
+                }
+            });
+        });
+
         form.on('submit(*)', function() {
             var url = "/role/update";
             var params = $("form").serializeArray();
@@ -96,6 +117,7 @@
             });
             return false;
         });
+
     });
 </script>
 </body>
