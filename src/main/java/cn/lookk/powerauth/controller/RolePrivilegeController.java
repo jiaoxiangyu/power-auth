@@ -75,16 +75,4 @@ public class RolePrivilegeController {
         return modelAndView;
     }
 
-    /**
-     * @title:  update
-     * @description:  TODO
-     * @param rolePrivilege
-     * @return  cn.wt.handleexception.vo.Result
-     */
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public Result update(RolePrivilege rolePrivilege){
-        logger.info("update rolePrivilege={}", rolePrivilege);
-        rolePrivilegeService.update(rolePrivilege);
-        return ResultUtil.success();
-    }
 }

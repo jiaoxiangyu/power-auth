@@ -34,6 +34,14 @@ public class PrivilegeController {
     @Autowired
     private IPrivilegeService privilegeService;
 
+    /**
+     * @title:  find
+     * @description:  TODO
+     * @param page
+     * @param limit
+     * @param search
+     * @return  cn.lookk.powerauth.vo.PageResult
+     */
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public PageResult find(@RequestParam(defaultValue = "1", name = "page") int page,
                            @RequestParam(defaultValue = "10", name = "limit") int limit,
@@ -43,22 +51,7 @@ public class PrivilegeController {
         logger.info("pageHelp={}", pageHelp);
         return PageResultUtil.success(pageHelp.getTotal(),pageHelp.getData());
     }
-
-    /**
-     * @title:  toAdd
-     * @description:  TODO
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
-     */
-    /*@RequestMapping(value = "toAdd", method = RequestMethod.GET)
-    public ModelAndView toAdd(ModelAndView modelAndView){
-        List<Privilege> privileges = privilegeService.findAll();
-        logger.info("privileges={}", privileges);
-        modelAndView.addObject("privileges", privileges);
-        modelAndView.setViewName("role/roleAdd");
-        return modelAndView;
-    }*/
-
+    
     /**
      * @title:  add
      * @description:  TODO
