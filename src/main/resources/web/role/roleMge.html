@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>权限认证管理平台</title>
     <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/js/layui/css/formSelects-v4.css}"/>
 
 </head>
 <body class="layui-layout-body">
@@ -37,14 +38,50 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
+    <div class="site-text" id="form" style="display: none; margin: 5%;">
+        <form class="layui-form">
+            <input type="hidden" id="id" name="id">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="text" id="description" name="description" lay-verify="required" placeholder="请输入描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <select id="privilege" name="privilege" xm-select="id" xm-select-search="" xm-select-direction="down" lay-verify="required">
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </body>
 
 <script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
 <script th:src="@{/js/jquery.min.js}" charset="utf-8"></script>
 
 <script th:inline="none">
-    layui.use('table', function(){
+    //全局定义一次, 加载formSelects
+    layui.config({
+        base: '/js/layui/' //此处路径请自行处理, 可以使用绝对路径
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+
+    layui.use(['table','form','element','jquery', 'formSelects'], function(){
         var table = layui.table;
+        var form = layui.form;
+        var formSelects=layui.formSelects;
+
         table.render({
             id : 'roleTable'
             ,elem: '#roleMge'
@@ -93,22 +130,68 @@
                 });
             } else if (obj.event === 'edit') {  //修改
                 layer.open({
-                    type : 2,
+                    type : 1,
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
-                    area : [ '400px', '350px' ],
-                    content : '/role/toUpdate/' + data.id,
-                    end: function () {
-                        var searchContent = $('#searchContent');
-                        //执行重载
-                        table.reload('roleTable', {
-                            page: {
-                                curr: table.page
+                    area : [ '400px', '285px' ],
+                    btn: ['确定', '取消'],
+                    content:$("#form"),  //弹窗路径
+                    success:function(layero,index){
+                        $('#id').val(data.id);
+                        $('#name').val(data.name);
+                        $('#description').val(data.description);
+                        $.ajax({
+                            type: "GET",
+                            url: "/rolePrivilege/getByRoleId/"+data.id,
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    var privileges=res.data.privileges;
+                                    var rolePrivileges=[];
+                                    rolePrivileges= res.data.rolePrivileges;
+                                    var select=$('#privilege');
+                                    select.html("");
+                                    $.each(privileges,function(index,data){
+                                        var option=$("<option id=\"opt_"+index+"\" value=\""+data.id+"\">"+data.name+"</option>");
+                                        $.each(rolePrivileges,function(index2,data2){
+                                            if (data.id==data2.privilegeId) {
+                                                option=$("<option id=\"opt_"+index+"\" value=\""+data.id+"\" selected>"+data.name+"</option>");
+                                                return false;
+                                            }
+                                        });
+                                        select.append(option);
+                                    });
+                                    formSelects.render('select');  //更新渲染
+                                } else {
+                                    layer.alert(res.msg);
+                                }
                             },
-                            where: {
-                                search: searchContent.val()
+                            error: function (res) {
+                                layer.alert(res.msg);
                             }
-                        })
+                        });
+
+                    },
+                    yes:function(index, layero) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/role/update",
+                            data: $("form").serializeArray(),
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.close(index);//关闭确认删除提示弹窗
+                                    layer.alert("修改成功!");
+                                    //重新加载列表
+                                    reloadTable(table.page);
+                                } else {
+                                    layer.alert(res.msg);
+                                }
+                            },
+                            error: function (res) {
+                                layer.alert(res.msg);
+                            }
+                        });
                     }
                 });
             }
@@ -152,22 +235,55 @@
         //添加
         $('#btn-add').on('click', function () {
             layer.open({
-                type: 2,
+                type: 1,
                 title: '添加页面',
                 maxmin: true, //开启最大化最小化按钮
-                area: ['400px', '400px'],
-                content: '/role/toAdd',
-                end: function () {
-                    var searchContent = $('#searchContent');
-                    //执行重载
-                    table.reload('roleTable', {
-                        page: {
-                            curr: 1
+                area: ['400px', '285px'],
+                btn: ['确定', '取消'],
+                content:$("#form"),  //弹窗路径
+                success:function(layero,index){
+                    $.ajax({
+                        type: "GET",
+                        url: "/privilege/getAll",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                var privileges=res.data;
+                                var select=$('#privilege');
+                                select.html("");
+                                $.each(privileges,function(index,data){
+                                    var option=$("<option id=\"opt_"+index+"\" value=\""+data.id+"\">"+data.name+"</option>");
+                                    select.append(option);
+                                });
+                                formSelects.render('select');  //更新渲染
+                            } else {
+                                layer.alert(res.msg);
+                            }
                         },
-                        where: {
-                            search: searchContent.val()
+                        error: function (res) {
+                            layer.alert(res.msg);
                         }
-                    })
+                    });
+                },
+                yes:function(index, layero) {
+                    $.ajax({
+                        type : "POST",
+                        url : "/role/add",
+                        data : $("form").serializeArray(),
+                        dataType : "json",
+                        success : function(res) {
+                            if (res.code == 0) {
+                                layer.alert("添加成功！");
+                                //重新加载列表
+                                reloadTable(table.page);
+                            } else {
+                                layer.alert(res.msg);
+                            }
+                        },
+                        error: function (res) {
+                            layer.alert(res.msg);
+                        }
+                    });
                 }
             });
         });

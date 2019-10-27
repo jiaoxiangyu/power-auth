@@ -16,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName: PrivilegeController
  * @Description: TODO
@@ -33,6 +37,8 @@ public class RolePrivilegeController {
 
     @Autowired
     private IRolePrivilegeService rolePrivilegeService;
+    @Autowired
+    private IPrivilegeService privilegeService;
 
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public PageResult find(@RequestParam(defaultValue = "1", name = "page") int page,
@@ -59,20 +65,22 @@ public class RolePrivilegeController {
         return ResultUtil.success();
     }
 
-    /**
-     * @title:  get
-     * @description:  TODO
-     * @param id
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
-     */
-    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public ModelAndView get(@PathVariable int id, ModelAndView modelAndView) {
-        RolePrivilege rolePrivilege=rolePrivilegeService.findOneById(id);
-        logger.info("rolePrivilege={}",rolePrivilege);
-        modelAndView.addObject("rolePrivilege",rolePrivilege);
-        modelAndView.setViewName("rolePrivilege/rolePrivilegeUpdate");
-        return modelAndView;
+   /**
+    * @title:  getByRoleId
+    * @description:  TODO
+    * @param roleId
+    * @return  cn.wt.handleexception.vo.Result
+    */
+    @RequestMapping(value = "getByRoleId/{roleId}", method = RequestMethod.GET)
+    public Result getByRoleId(@PathVariable int roleId) {
+        logger.info("roleId={}", roleId);
+        List<Privilege> privileges = privilegeService.findAll();
+        List<RolePrivilege> rolePrivileges = rolePrivilegeService.findByRoleId(roleId);
+        logger.info("rolePrivileges={}", rolePrivileges);
+        Map<String, Object> date = new HashMap<>();
+        date.put("privileges", privileges);
+        date.put("rolePrivileges",rolePrivileges);
+        return ResultUtil.success(date);
     }
 
 }

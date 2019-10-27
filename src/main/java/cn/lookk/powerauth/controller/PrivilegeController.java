@@ -92,4 +92,16 @@ public class PrivilegeController {
         privilegeService.update(privilege);
         return ResultUtil.success();
     }
+
+    /**
+     * @title:  getAll
+     * @description:  TODO
+     * @param
+     * @return  cn.wt.handleexception.vo.Result
+     */
+    @RequestMapping(value = "getAll", method = RequestMethod.GET)
+    public Result getAll(){
+        List<Privilege> privileges = privilegeService.findAll();
+        return ResultUtil.success(privileges);
+    }
 }

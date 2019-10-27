@@ -96,26 +96,7 @@ public class RoleController {
         return ResultUtil.success();
     }
 
-    /**
-     * @title:  toUpdate
-     * @description:  TODO
-     * @param id
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
-     */
-    @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
-    public ModelAndView toUpdate(@PathVariable int id, ModelAndView modelAndView) {
-        Role role=roleService.findOneById(id);
-        logger.info("role={}",role);
-        List<Privilege> privileges = privilegeService.findAll();
-        List<RolePrivilege> rolePrivileges = rolePrivilegeService.findByRoleId(id);
-        logger.info("privileges={}", privileges);
-        modelAndView.addObject("role",role);
-        modelAndView.addObject("privileges",privileges);
-        modelAndView.addObject("rolePrivileges",rolePrivileges);
-        modelAndView.setViewName("role/roleUpdate");
-        return modelAndView;
-    }
+
 
     /**
      * @title:  update
