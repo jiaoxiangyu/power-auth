@@ -32,15 +32,19 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int add(Role roel, Integer[] privilegeIds) {
-        int roleId=roleMapper.add(roel);
-        rolePrivilegeService.addOfRole(roleId, privilegeIds);
+    public int add(Role role, Integer[] privilegeIds) {
+        int roleId=roleMapper.add(role);
+        role.setId(roleId);
+        rolePrivilegeService.addOfRole(role, privilegeIds);
         return 1;
     }
 
     @Override
-    public int update(Role roel) {
-        return roleMapper.update(roel);
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Role role, Integer[] privilegeIds) {
+        roleMapper.update(role);
+        //更新权限
+        rolePrivilegeService.updateByRole(role, privilegeIds);
     }
 
     @Override

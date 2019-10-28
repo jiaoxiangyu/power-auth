@@ -14,6 +14,8 @@ public interface RolePrivilegeMapper {
 
     int delete(int id);
 
+    void deleteByRoleId(Integer role);
+
     RolePrivilege findOneById(int id);
 
     int count();

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>权限认证管理平台</title>
-    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/static/js/layui/css/layui.css}" media="all">
 
 </head>
 <body class="layui-layout-body">
@@ -30,21 +30,59 @@
     </div>
 
 
-    <table class="layui-hide" id="userMge" lay-filter="operate"></table>
+    <table class="layui-table" lay-skin="line" id="userMge" lay-filter="operate"></table>
 
     <script type="text/html" id="barOperate">
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
+    <div class="site-text" id="form" style="display: none; margin: 5%;">
+        <form class="layui-form">
+            <div class="layui-form-item" >
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="text" id="phone" name="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <select id="role" name="roleId" >
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="password" id="pwd1" name="pwd" lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block" style="width:50%;">
+                    <input type="password" id="pwd2"  lay-verify="required|repass" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </form>
+    </div>
+
 </body>
 
-<script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
-<script th:src="@{/js/jquery.min.js}" charset="utf-8"></script>
+<script th:src="@{/static/js/layui/layui.js}" charset="utf-8"></script>
+<script th:src="@{/static/js/jquery.min.js}" charset="utf-8"></script>
 
 <script th:inline="none">
-    layui.use('table', function(){
+    layui.use(['table','form'], function(){
         var table = layui.table;
+        var form = layui.form;
         table.render({
             id : 'userTable'
             ,elem: '#userMge'
@@ -55,7 +93,7 @@
             ,page: true
             , cols: [[
                 {type : 'checkbox'}
-                ,{field:'id', title: 'ID', align: 'center', sort: true}
+                ,{field:'id', title: 'ID', align: 'center', sort: true, with:100}
                 ,{field:'name', title: '姓名', align: 'center', sort: true}
                 ,{field:'phone', title: '手机号', align: 'center', sort: true}
                 ,{field:'role', title: '角色', align: 'center', sort: true}
@@ -78,38 +116,83 @@
                         success : function(res) {
                             if (res.code==0) {
                                 layer.close(index);//关闭确认删除提示弹窗
-                                layer.alert("删除成功!");
+                                layer.msg("删除成功!");
                                 //重新加载列表
                                 reloadTable(table.page);
                             }else {
                                 layer.close(index);
-                                layer.alert(res.msg)
+                                layer.msg(res.msg)
                             }
                         },
                         error : function(res) {
                             layer.close(index);
-                            layer.alert(res.msg)
+                            layer.msg(res.msg)
                         }
                     });
                 });
             } else if (obj.event === 'edit') {  //修改
                 layer.open({
-                    type : 2,
+                    type : 1,
                     title : '修改页面',
                     maxmin : true, //开启最大化最小化按钮
-                    area : [ '400px', '350px' ],
-                    content : '/user/toUpdate/' + data.id,
-                    end: function () {
-                        var searchContent = $('#searchContent');
-                        //执行重载
-                        table.reload('userTable', {
-                            page: {
-                                curr: table.page
+                    area : [ '400px', '390px' ],
+                    btn: ['确定', '取消'],
+                    content:$("#form"),  //弹窗路径
+                    success:function(layero,index){
+                        $('#name').val(data.name);
+                        $('#phone').val(data.phone);
+                        $('#pwd1').val(data.pwd);
+                        $('#pwd2').val(data.pwd);
+                        $.ajax({
+                            type: "GET",
+                            url: "/role/findAll",
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    var roles=res.data;
+                                    var select=$('#role');
+                                    select.html("");
+                                    $.each(roles,function(index,role){
+                                        var option=$("");
+                                        if (data.roleId==role.id) {
+                                            option=$("<option id=\"opt_"+index+"\" value=\""+role.id+"\" selected>"+role.name+"</option>");
+                                        }else {
+                                            option=$("<option id=\"opt_"+index+"\" value=\""+role.id+"\">"+role.name+"</option>");
+                                        }
+                                        select.append(option);
+                                    });
+                                    form.render('select');  //更新渲染
+                                } else {
+                                    layer.msg(res.msg);
+                                }
                             },
-                            where: {
-                                search: searchContent.val()
+                            error: function (res) {
+                                layer.msg(res.msg);
                             }
-                        })
+                        });
+                    },
+                    yes:function(index, layero) {
+                        var param=$("form").serializeArray();
+                        param.push({name:"id", value: data.id});
+                        $.ajax({
+                            type: "POST",
+                            url: "/user/update",
+                            data: param,
+                            dataType: "json",
+                            success: function (res) {
+                                if (res.code == 0) {
+                                    layer.close(index);//关闭确认删除提示弹窗
+                                    layer.msg("修改成功!");
+                                    //重新加载列表
+                                    reloadTable(table.page);
+                                } else {
+                                    layer.msg(res.msg);
+                                }
+                            },
+                            error: function (res) {
+                                layer.msg(res.msg);
+                            }
+                        });
                     }
                 });
             }
@@ -153,22 +236,62 @@
         //添加
         $('#btn-add').on('click', function () {
             layer.open({
-                type: 2,
+                type: 1,
                 title: '添加页面',
                 maxmin: true, //开启最大化最小化按钮
-                area: ['400px', '400px'],
-                content: '/user/toAdd',
-                end: function () {
-                    var searchContent = $('#searchContent');
-                    //执行重载
-                    table.reload('userTable', {
-                        page: {
-                            curr: 1
+                area: ['400px', '390px'],
+                btn: ['确定', '取消'],
+                content:$("#form"),  //弹窗路径
+                success:function(layero,index){
+                    $('#name').val("");
+                    $('#phone').val("");
+                    $('#pwd1').val("");
+                    $('#pwd2').val("");
+                    $.ajax({
+                        type: "GET",
+                        url: "/role/findAll",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                var roles=res.data;
+                                var select=$('#role');
+                                select.html("");
+                                $.each(roles,function(index,role){
+                                    var option=$("<option id=\"opt_"+index+"\" value=\""+role.id+"\">"+role.name+"</option>");
+                                    select.append(option);
+                                });
+                                form.render('select');  //更新渲染
+                            } else {
+                                layer.msg(res.msg);
+                            }
                         },
-                        where: {
-                            search: searchContent.val()
+                        error: function (res) {
+                            layer.msg(res.msg);
                         }
-                    })
+                    });
+                },
+                yes:function(index, layero) {
+                    var param=$("form").serializeArray();
+                    param.push({name:"id", value: data.id});
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/add",
+                        data: param,
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layer.close(index);//关闭确认删除提示弹窗
+                                layer.msg("添加成功!");
+                                //重新加载列表
+                                reloadTable(table.page);
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        },
+                        error: function (res) {
+                            layer.msg(res.msg);
+                        }
+                    });
                 }
             });
         });

@@ -12,11 +12,15 @@ public interface IRolePrivilegeService {
 
     int addBatch(List<RolePrivilege> rolePrivileges);
 
-    void addOfRole(int roleId, Integer[] privilegeIds);
+    void addOfRole(Role role, Integer[] privilegeIds);
 
     int update(RolePrivilege rolePrivilege);
 
+    void updateByRole(Role role, Integer[] privilegeIds);
+
     int delete(int id);
+
+    void deleteByRoleId(Integer roleId);
 
     RolePrivilege findOneById(int id);
 

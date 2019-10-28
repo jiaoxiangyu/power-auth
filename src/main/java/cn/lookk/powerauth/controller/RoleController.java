@@ -54,20 +54,17 @@ public class RoleController {
     }
 
     /**
-     * @title:  toAdd
+     * @title:  findAll
      * @description:  TODO
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
+     * @param 
+     * @return  cn.wt.handleexception.vo.Result
      */
-    @RequestMapping(value = "toAdd", method = RequestMethod.GET)
-    public ModelAndView toAdd(ModelAndView modelAndView){
-        List<Privilege> privileges = privilegeService.findAll();
-        logger.info("privileges={}", privileges);
-        modelAndView.addObject("privileges", privileges);
-        modelAndView.setViewName("role/roleAdd");
-        return modelAndView;
+    @RequestMapping(value = "findAll", method = RequestMethod.GET)
+    public Result findAll(){
+        List<Role> roles = roleService.findAll();
+        return ResultUtil.success(roles);
     }
-    
+
     /**
      * @title:  add
      * @description:  TODO
@@ -96,8 +93,6 @@ public class RoleController {
         return ResultUtil.success();
     }
 
-
-
     /**
      * @title:  update
      * @description:  TODO
@@ -105,9 +100,9 @@ public class RoleController {
      * @return  cn.wt.handleexception.vo.Result
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public Result update(Role role){
+    public Result update(Role role, String privilege){
         logger.info("update role={}", role);
-        roleService.update(role);
+        roleService.update(role, StringUtil.toInts(privilege.split(",")));
         return ResultUtil.success();
     }
 

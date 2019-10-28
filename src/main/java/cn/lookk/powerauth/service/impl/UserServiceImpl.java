@@ -54,9 +54,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int update(User user) {
-        Role role=roleMapper.findOneByName(user.getRole());
+        Role role = roleMapper.findOneById(user.getRoleId());
         Assert.isNull(role, 413, "role is null");
-        user.setRoleId(role.getId());
+        user.setRole(role.getName());
         user.setUpdateTime(LocalDateTime.now());
         return userMapper.update(user);
     }

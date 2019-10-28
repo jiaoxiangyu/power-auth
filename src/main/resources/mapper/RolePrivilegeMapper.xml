@@ -18,11 +18,15 @@
 
 
     <update id="update" parameterType="cn.lookk.powerauth.po.RolePrivilege">
-       update tb_role_privilege set name = #{name}, url=#{url},describe=#{describe} where id=#{id}
+       update tb_role_privilege set name = #{name}, url=#{url},describe=#{describe} where id=#{id};
     </update>
 
     <delete id="delete" parameterType="java.lang.Integer">
         delete from tb_role_privilege where id=#{id} limit 1;
+    </delete>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from tb_role_privilege where role_id=#{roleId};
     </delete>
 
     <resultMap type="cn.lookk.powerauth.po.RolePrivilege" id="rolePrivilegeMap">
@@ -37,30 +41,30 @@
     </resultMap>
 
     <select id="findOneById" resultType="cn.lookk.powerauth.po.RolePrivilege">
-        select * from  tb_role_privilege where id=#{id}
+        select * from  tb_role_privilege where id=#{id};
     </select>
 
     <select id="count" resultType="java.lang.Integer">
-        select count(*) from tb_role_privilege
+        select count(*) from tb_role_privilege;
     </select>
 
     <select id="countBySearch" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(*) from tb_role_privilege where name=#{search}
+        select count(*) from tb_role_privilege where name=#{search};
     </select>
 
     <select id="findByRoleId" resultMap="rolePrivilegeMap">
-        select * from tb_role_privilege
+        select * from tb_role_privilege where role_id=#{roleId};
     </select>
 
     <select id="find" resultMap="rolePrivilegeMap">
-        select * from tb_role_privilege limit #{start}, #{limit}
+        select * from tb_role_privilege limit #{start}, #{limit};
     </select>
 
     <select id="findBySearch" resultMap="rolePrivilegeMap">
         select * from tb_role_privilege
         where name like CONCAT(#{search, jdbcType=VARCHAR},'%')
         order by id desc
-        limit #{start}, #{limit}
+        limit #{start}, #{limit};
     </select>
 
 

@@ -110,25 +110,6 @@ public class UserCotroller {
     }
 
     /**
-     * @title:  toUpdate
-     * @description:  TODO
-     * @param id
-     * @param modelAndView
-     * @return  org.springframework.web.servlet.ModelAndView
-     */
-    @RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
-    public ModelAndView toUpdate(@PathVariable Long id, ModelAndView modelAndView) {
-        User user=userService.findOneById(id);
-        logger.info("user={}",user);
-        modelAndView.addObject("user",user);
-        List<Role> roles=roleService.findAll();
-        logger.info("roles={}",roles);
-        modelAndView.addObject("roles",roles);
-        modelAndView.setViewName("user/userUpdate");
-        return modelAndView;
-    }
-
-    /**
      * @title:  update
      * @description:  TODO
      * @param user

@@ -44,13 +44,12 @@ public class RolePrivilegeServiceImpl implements IRolePrivilegeService {
     }
 
     @Override
-    public void addOfRole(int roleId, Integer[] privilegeIds) {
-        Role role = roleService.findOneById(roleId);
+    public void addOfRole(Role role, Integer[] privilegeIds) {
         List<Privilege> privileges=privilegeService.findByIds(privilegeIds);
         List<RolePrivilege> rolePrivileges = new ArrayList<>();
         for (Privilege privilege : privileges) {
             RolePrivilege rolePrivilege = new RolePrivilege();
-            rolePrivilege.setRoleId(roleId);
+            rolePrivilege.setRoleId(role.getId());
             rolePrivilege.setRoleName(role.getName());
             rolePrivilege.setPrivilegeId(privilege.getId());
             rolePrivilege.setPrivilegeName(privilege.getName());
@@ -68,8 +67,21 @@ public class RolePrivilegeServiceImpl implements IRolePrivilegeService {
     }
 
     @Override
+    public void updateByRole(Role role, Integer[] privilegeIds) {
+        //先删除旧的角色权限
+        deleteByRoleId(role.getId());
+        //添加新的角色权限
+        addOfRole(role, privilegeIds);
+    }
+
+    @Override
     public int delete(int id) {
         return rolePrivilegeMapper.delete(id);
+    }
+
+    @Override
+    public void deleteByRoleId(Integer roleId) {
+        rolePrivilegeMapper.deleteByRoleId(roleId);
     }
 
     @Override
