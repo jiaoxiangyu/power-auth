@@ -94,8 +94,8 @@
                 ,{field:'id', title: 'ID', align: 'center', sort: true}
                 ,{field:'name', title: '名称', align: 'center', sort: true}
                 ,{field:'description', title: '描述', align: 'center', sort: true}
-                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
-                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime.time, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime.time, "yyyy-MM-dd HH:mm:ss")}}</div>'}
                 ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });

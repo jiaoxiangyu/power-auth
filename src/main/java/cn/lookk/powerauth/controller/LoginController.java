@@ -30,7 +30,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(ModelAndView modelAndView){
         logger.info("login");
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("login");
         return modelAndView;
     }
 

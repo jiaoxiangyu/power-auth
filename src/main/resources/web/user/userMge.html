@@ -97,8 +97,8 @@
                 ,{field:'name', title: '姓名', align: 'center', sort: true}
                 ,{field:'phone', title: '手机号', align: 'center', sort: true}
                 ,{field:'role', title: '角色', align: 'center', sort: true}
-                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
-                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'createTime', title: '创建时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.createTime.time, "yyyy-MM-dd HH:mm:ss")}}</div>'}
+                ,{field:'updateTime', title: '更新时间', align: 'center', sort: true, templet: '<div>{{layui.util.toDateString(d.updateTime.time, "yyyy-MM-dd HH:mm:ss")}}</div>'}
                 ,{field : 'right', align : 'center', toolbar : '#barOperate', title : '操作'}
             ]]
         });
