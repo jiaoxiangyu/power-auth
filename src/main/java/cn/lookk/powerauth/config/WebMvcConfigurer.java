@@ -37,7 +37,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
          */
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login.html", "/static/**");
+                .excludePathPatterns("/", "/login", "/static/**");
 
         super.addInterceptors(registry);
     }
