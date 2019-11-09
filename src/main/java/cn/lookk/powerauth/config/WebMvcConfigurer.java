@@ -37,7 +37,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
          */
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login", "/static/**");
+                .excludePathPatterns("/", "/login", "/static/**", "/favicon.ico");
 
         super.addInterceptors(registry);
     }

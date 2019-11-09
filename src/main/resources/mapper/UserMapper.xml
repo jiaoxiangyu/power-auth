@@ -16,6 +16,15 @@
         </where>
     </update>
 
+
+    <update id="updateLoginTime" parameterType="cn.lookk.powerauth.po.User">
+        update tb_user set update_time=#{updateTime}
+        <where>
+            id=#{id}
+            and del=0
+        </where>
+    </update>
+
     <delete id="delete" >
         update tb_user set del=1, update_time=#{updateTime} where id=#{id} limit 1;
     </delete>
@@ -59,6 +68,13 @@
         and del=0
         order by id desc
         limit #{start}, #{limit}
+    </select>
+
+
+    <select id="login" resultType="cn.lookk.powerauth.po.User" parameterType="java.lang.String">
+        select id,role_id from tb_user
+        where phone=#{phone} and pwd=#{pwd}
+        and del=0
     </select>
 
 </mapper>

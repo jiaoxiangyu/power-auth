@@ -39,10 +39,10 @@ public class UserServiceImpl implements IUserService {
     private static long workerId;
 
     @Value("${user_datacenter_id}")
-    private static long userDatacenterId;
+    private static long userDataCenterId;
 
     //IdWorker暂时放在这里，实现单例服务uid唯一性，分布式时，使用一个独立服务生成唯一ID，也可以放在这个服务中，提供权限认证和唯一ID生成
-    private static IdWorker idWorker = new IdWorker(workerId, userDatacenterId);
+    private static IdWorker idWorker = new IdWorker(workerId, userDataCenterId);
 
     @Override
     public int add(User user) {
@@ -59,6 +59,11 @@ public class UserServiceImpl implements IUserService {
         user.setRole(role.getName());
         user.setUpdateTime(LocalDateTime.now());
         return userMapper.update(user);
+    }
+
+    @Override
+    public int updateLoginTime(User user) {
+        return userMapper.updateLoginTime(user);
     }
 
     @Override
@@ -91,5 +96,10 @@ public class UserServiceImpl implements IUserService {
             List<User> data = userMapper.findBySearch(start, limit, search);
             return new PageHelp(total, data);
         }
+    }
+
+    @Override
+    public User login(String phone, String pwd) {
+        return userMapper.login(phone,pwd);
     }
 }

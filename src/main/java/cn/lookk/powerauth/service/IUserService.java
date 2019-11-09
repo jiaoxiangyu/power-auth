@@ -10,9 +10,13 @@ public interface IUserService {
 
     int update(User user);
 
+    int updateLoginTime(User user);
+
     int delete(Long id);
 
     User findOneById(Long id);
 
     PageHelp find(String search, int page, int limit);
+
+    User login(String phone, String pwd);
 }

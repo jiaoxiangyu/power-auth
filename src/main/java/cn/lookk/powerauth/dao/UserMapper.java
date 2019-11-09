@@ -13,6 +13,8 @@ public interface UserMapper {
 
     int update(User user);
 
+    int updateLoginTime(User user);
+
     int delete(Long id, LocalDateTime updateTime);
 
     User findOneById(Long id);
@@ -24,4 +26,6 @@ public interface UserMapper {
     List<User> find(int start, int limit);
 
     List<User> findBySearch(int start, int limit, String search);
+
+    User login(String phone, String pwd);
 }
