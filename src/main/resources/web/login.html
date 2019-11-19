@@ -62,17 +62,24 @@
 <script th:src="@{/static/js/layui/layui.js}" charset="utf-8"></script>
 <script th:src="@{/static/js/jquery.min.js}" charset="utf-8"></script>
 <script>
-    layui.use('form', function() {
+    layui.use(['form','element','jquery'], function() {
         var form = layui.form;
+        var $ = jQuery = layui.jquery;
         form.on('submit(*)', function() {
             var params=$("form").serializeArray();
-            $.post(
-                "/login",
-                params,
-                function(data,status){
+            $.ajax({
+                url: "/index",
+                type: "post",
+                data: params,
+                dataType: "json",
+                success: function (data) {
+                    location.href="/action/index";
+                },
+                error: function (data) {
                     layer.msg(data.msg);
                 }
-            );
+            });
+            return false;
         });
     });
 </script>

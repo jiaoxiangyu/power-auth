@@ -5,6 +5,8 @@ import cn.lookk.powerauth.service.IUserService;
 import cn.lookk.powerauth.util.IdWorker;
 import cn.lookk.powerauth.util.RedisUtil;
 import cn.wt.handleexception.exception.Assert;
+import cn.wt.handleexception.util.ResultUtil;
+import cn.wt.handleexception.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,19 +57,22 @@ public class LoginController {
      * @param 
      * @return  java.lang.String
      */
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public ModelAndView index(ModelAndView modelAndView){
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login(ModelAndView modelAndView){
+        logger.info("login");
         modelAndView.setViewName("login");
         return modelAndView;
     }
+
     /**
      * @title:  login
      * @description:  登录进入 index.html
      * @param modelAndView
      * @return  org.springframework.web.servlet.ModelAndView
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(User user, HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView){
+    @RequestMapping(value = "/index", method = RequestMethod.POST)
+    public Result index(User user, HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView){
+        logger.info("index, user={}", user);
         //获取token
         String requestToken=null;
         Cookie[] cookies =  request.getCookies();
@@ -78,6 +83,7 @@ public class LoginController {
                 }
             }
         }
+        logger.info("requestToken={}",requestToken);
 
         if (requestToken==null){
             //登录
@@ -88,19 +94,19 @@ public class LoginController {
             userService.updateLoginTime(loginUser);
             //生成token
             String token= String.valueOf(idWorker.nextId());
-            //redisUtil.set("token:" + token, user, 7200l);
+            redisUtil.set("token:" + token, user, 7200l);
             //token设置一级域名, 并放到response
             Cookie cookie = new Cookie("token", token);
             /*cookie.setDomain("lookk.cn");*/
             cookie.setMaxAge(7200);
             response.addCookie(cookie);
 
-            modelAndView.setViewName("index");
-            return modelAndView;
+        }else {
+            String userJson = (String) redisUtil.get("token:" + requestToken);
+            logger.info("userJson={}",userJson);
         }
 
-        modelAndView.setViewName("login");
-        return modelAndView;
+        return ResultUtil.success();
     }
 
 
