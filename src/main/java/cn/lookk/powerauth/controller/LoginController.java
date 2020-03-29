@@ -1,12 +1,14 @@
 package cn.lookk.powerauth.controller;
 
+import cn.lookk.handleexception.exception.Assert;
+import cn.lookk.handleexception.util.ResultUtil;
+import cn.lookk.handleexception.vo.Result;
 import cn.lookk.powerauth.po.User;
 import cn.lookk.powerauth.service.IUserService;
 import cn.lookk.powerauth.util.IdWorker;
 import cn.lookk.powerauth.util.RedisUtil;
-import cn.wt.handleexception.exception.Assert;
-import cn.wt.handleexception.util.ResultUtil;
-import cn.wt.handleexception.vo.Result;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,7 @@ public class LoginController {
     @RequestMapping(value = "/index", method = RequestMethod.POST)
     public Result index(User user, HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView){
         logger.info("index, user={}", user);
-        //获取token
+        //获取request token
         String requestToken=null;
         Cookie[] cookies =  request.getCookies();
         if(cookies != null){
@@ -85,29 +87,45 @@ public class LoginController {
         }
         logger.info("requestToken={}",requestToken);
 
-        if (requestToken==null){
-            //登录
-            User loginUser = userService.login(user.getPhone(), user.getPwd());
-            Assert.isNull(loginUser,4001,"手机号或密码错误");
-            //更新登录时间
-            loginUser.setUpdateTime(LocalDateTime.now());
-            userService.updateLoginTime(loginUser);
-            //生成token
-            String token= String.valueOf(idWorker.nextId());
-            redisUtil.set("token:" + token, user, 7200l);
-            //token设置一级域名, 并放到response
-            Cookie cookie = new Cookie("token", token);
-            /*cookie.setDomain("lookk.cn");*/
-            cookie.setMaxAge(7200);
-            response.addCookie(cookie);
-
-        }else {
+        if (requestToken!=null){
             String userJson = (String) redisUtil.get("token:" + requestToken);
             logger.info("userJson={}",userJson);
+            if (StringUtils.isNotBlank(userJson)) {
+                //校验权限
+
+
+            }
         }
+
+        //登录
+        User loginUser = userService.login(user.getPhone(), user.getPwd());
+        Assert.isNull(loginUser,4001,"手机号或密码错误");
+        //更新登录时间
+        loginUser.setUpdateTime(LocalDateTime.now());
+        userService.updateLoginTime(loginUser);
+        //生成token
+        String token= String.valueOf(idWorker.nextId());
+        redisUtil.set("token:" + token, JSONObject.toJSON(loginUser).toString(), 7200l);
+        //token设置一级域名, 并放到response
+        Cookie cookie = new Cookie("token", token);
+        /*cookie.setDomain("lookk.cn");*/
+        cookie.setMaxAge(7200);
+        response.addCookie(cookie);
 
         return ResultUtil.success();
     }
+
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(User user, HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView){
+
+
+
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+
 
 
 

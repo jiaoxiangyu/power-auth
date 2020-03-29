@@ -1,5 +1,6 @@
 package cn.lookk.powerauth.service.impl;
 
+import cn.lookk.handleexception.exception.Assert;
 import cn.lookk.powerauth.dao.RoleMapper;
 import cn.lookk.powerauth.dao.UserMapper;
 import cn.lookk.powerauth.po.Role;
@@ -8,14 +9,11 @@ import cn.lookk.powerauth.service.IUserService;
 import cn.lookk.powerauth.util.IdWorker;
 import cn.lookk.powerauth.util.PageUtil;
 import cn.lookk.powerauth.vo.PageHelp;
-import cn.wt.handleexception.exception.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -1,5 +1,8 @@
 package cn.lookk.powerauth.util;
 
+import cn.lookk.powerauth.po.User;
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * @ClassName: Test
  * @Description: TODO
@@ -9,11 +12,12 @@ package cn.lookk.powerauth.util;
  * @Since JDK1.8
  */
 public class Test {
-    public static long isTrue(Long l){
-        return l;
-    }
 
     public static void main(String[] args) {
-        System.out.println(isTrue(1l));
+        User user = new User();
+        user.setRoleId(1);
+        user.setId(1l);
+
+        System.out.println(JSONObject.toJSON(user));
     }
 }

@@ -1,11 +1,9 @@
 package cn.lookk.powerauth.exception;
 
 
-import cn.wt.handleexception.constants.ResultEnum;
-import cn.wt.handleexception.exception.AssertException;
-import cn.wt.handleexception.exception.LogException;
-import cn.wt.handleexception.util.ResultUtil;
-import cn.wt.handleexception.vo.Result;
+import cn.lookk.handleexception.constants.ResultEnum;
+import cn.lookk.handleexception.util.ResultUtil;
+import cn.lookk.handleexception.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 @ResponseBody
 public class ExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(cn.wt.handleexception.exception.ExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     private static int code= ResultEnum.SERVER_ERROR.getCode();
     private String msg = ResultEnum.SERVER_ERROR.getMsg();

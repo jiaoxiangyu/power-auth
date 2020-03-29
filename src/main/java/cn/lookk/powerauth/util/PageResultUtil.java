@@ -1,7 +1,7 @@
 package cn.lookk.powerauth.util;
 
+import cn.lookk.handleexception.constants.ResultEnum;
 import cn.lookk.powerauth.vo.PageResult;
-import cn.wt.handleexception.constants.ResultEnum;
 
 /**
  * @ClassName: PageResultUtil

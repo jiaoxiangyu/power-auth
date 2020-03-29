@@ -1,6 +1,7 @@
 package cn.lookk.powerauth.util;
 
-import cn.wt.handleexception.exception.Assert;
+
+import cn.lookk.handleexception.exception.Assert;
 
 import java.util.Date;
 

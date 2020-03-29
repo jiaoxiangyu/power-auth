@@ -1,5 +1,8 @@
 package cn.lookk.powerauth.controller;
 
+import cn.lookk.handleexception.exception.Assert;
+import cn.lookk.handleexception.util.ResultUtil;
+import cn.lookk.handleexception.vo.Result;
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.RolePrivilege;
@@ -10,9 +13,6 @@ import cn.lookk.powerauth.util.PageResultUtil;
 import cn.lookk.powerauth.util.StringUtil;
 import cn.lookk.powerauth.vo.PageHelp;
 import cn.lookk.powerauth.vo.PageResult;
-import cn.wt.handleexception.exception.Assert;
-import cn.wt.handleexception.util.ResultUtil;
-import cn.wt.handleexception.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
