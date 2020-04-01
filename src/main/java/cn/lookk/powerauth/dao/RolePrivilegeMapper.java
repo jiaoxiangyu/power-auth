@@ -6,25 +6,26 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface RolePrivilegeMapper {
+
     int add(RolePrivilege rolePrivilege);
 
     int addBatch(@Param("rolePrivileges")List<RolePrivilege> rolePrivileges);
 
     int update(RolePrivilege rolePrivilege);
 
-    int delete(int id);
+    int delete(@Param("id")Integer id);
 
-    void deleteByRoleId(Integer role);
+    void deleteByRoleId(@Param("roleId")Integer roleId);
 
-    RolePrivilege findOneById(int id);
+    RolePrivilege findOneById(@Param("id")Integer id);
 
     int count();
 
-    int countBySearch(String search);
+    int countBySearch(@Param("search")String search);
 
-    List<RolePrivilege> findByRoleId(int roleId);
+    List<RolePrivilege> findByRoleId(@Param("roleId")Integer roleId);
 
-    List<RolePrivilege> find(int start, int limit);
+    List<RolePrivilege> find(@Param("start")Integer start, @Param("limit")Integer limit);
 
-    List<RolePrivilege> findBySearch(int start, int limit, String search);
+    List<RolePrivilege> findBySearch(@Param("start")Integer start, @Param("limit")Integer limit, @Param("search")String search);
 }

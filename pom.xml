@@ -12,6 +12,7 @@
     <artifactId>power-auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>power-auth</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -97,16 +98,30 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--fastjson-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.47</version>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
 
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <!-- 配置java版本 不配置的话默认父类配置的是1.6-->
         <pluginManagement>
             <plugins>
                 <plugin>

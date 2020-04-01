@@ -13,15 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 public class PowerAuthApplicationTests {
 
-    @Autowired
-    private RoleMapper roleMapper;
 
-  /*  @Test
+    @Test
     public void contextLoads() {
-        Role role = new Role();
-        role.setName("名称");
-        role.setDescription("描述");
-        roleMapper.add(role);
-    }*/
+    }
 
 }

@@ -6,23 +6,23 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PrivilegeMapper {
-    int add(Privilege user);
+    int add(Privilege privilege);
 
-    int update(Privilege user);
+    int update(Privilege privilege);
 
-    int delete(int id);
+    int delete(@Param("id")Integer id);
 
-    Privilege findOneById(int id);
+    Privilege findOneById(@Param("id")Integer id);
 
     int count();
 
-    int countBySearch(String search);
+    int countBySearch(@Param("search")String search);
 
     List<Privilege> findAll();
 
-    List<Privilege> findByIds(@Param("ids") Integer[] ids);
+    List<Privilege> findByIds(@Param("ids")Integer[] ids);
 
-    List<Privilege> find(int start, int limit);
+    List<Privilege> find(@Param("start")Integer start, @Param("limit")Integer limit);
 
     List<Privilege> findBySearch(@Param("start")int start, @Param("limit")int limit, @Param("search")String search);
 

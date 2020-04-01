@@ -1,28 +1,29 @@
 package cn.lookk.powerauth.dao;
 
 import cn.lookk.powerauth.po.Role;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 
 public interface RoleMapper {
-    int add(Role user);
+    int add(Role role);
 
-    int update(Role user);
+    int update(Role role);
 
-    int delete(Integer id);
+    int delete(@Param("id")Integer id);
 
-    Role findOneById(Integer id);
+    Role findOneById(@Param("id")Integer id);
 
-    Role findOneByName(String name);
+    Role findOneByName(@Param("name")String name);
 
     int count();
 
-    int countBySearch(String search);
+    int countBySearch(@Param("search")String search);
 
     List<Role> findAll();
 
-    List<Role> find(int start, int limit);
+    List<Role> find(@Param("start")Integer start, @Param("limit")Integer limit);
 
-    List<Role> findBySearch(int start, int limit, String search);
+    List<Role> findBySearch(@Param("start")Integer start, @Param("limit")Integer limit, @Param("search")String search);
 }

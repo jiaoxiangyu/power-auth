@@ -15,17 +15,17 @@ public interface UserMapper {
 
     int updateLoginTime(User user);
 
-    int delete(Long id, LocalDateTime updateTime);
+    int delete(@Param("id")Long id, @Param("updateTime")LocalDateTime updateTime);
 
-    User findOneById(Long id);
+    User findOneById(@Param("id")Long id);
 
     int count();
 
-    int countBySearch(String search);
+    int countBySearch(@Param("search")String search);
 
-    List<User> find(int start, int limit);
+    List<User> find(@Param("start")Integer start, @Param("limit")Integer limit);
 
-    List<User> findBySearch(int start, int limit, String search);
+    List<User> findBySearch(@Param("start")Integer start, @Param("limit")Integer limit, @Param("search")String search);
 
-    User login(String phone, String pwd);
+    User login(@Param("phone")String phone, @Param("pwd")String pwd);
 }
