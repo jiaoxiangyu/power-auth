@@ -111,10 +111,11 @@
             <version>4.12</version>
         </dependency>
 
-
     </dependencies>
 
     <build>
+        <finalName>power-auth</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
