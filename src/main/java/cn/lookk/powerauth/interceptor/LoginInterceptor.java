@@ -1,8 +1,18 @@
 package cn.lookk.powerauth.interceptor;
 
 import cn.lookk.powerauth.annotation.Login;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import cn.lookk.powerauth.service.ILoginService;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,21 +25,38 @@ import javax.servlet.http.HttpServletResponse;
  * @Version 1.0
  * @Since JDK1.8
  */
-public class LoginInterceptor extends HandlerInterceptorAdapter {
-     @Override
-     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-         // 处理handler;
-         if (handler instanceof HandlerMethod) {
-             // 判断当前method上是否有Login注解
-             HandlerMethod hm = (HandlerMethod) handler;
-             if (hm.getMethodAnnotation(Login.class) != null) {
-                 // 判断当前是否用户登录,如果没有登录,跳转到登录页面
+@Component
+@Aspect
+public class LoginInterceptor{
 
-                 //response.sendRedirect("/login.html");
-                 //return false;
-             }
-         }
-         return super.preHandle(request, response, handler);
-     }
+    private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+
+    @Autowired
+    private ILoginService loginService;
+
+    // 登录校验Controller层切点
+    //@Pointcut("@annotation(cn.lookk.powerauth.annotation.Login) && execution(* cn.lookk..*(..))")
+    @Pointcut("@annotation(cn.lookk.powerauth.annotation.Login)")
+    public void loginAspect() {
+    }
+
+    /**
+     * 用于拦截Controller层校验登录
+     *
+     */
+    @Around("loginAspect()")
+    public Object isLogin(ProceedingJoinPoint pjp) throws Throwable {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+
+        // 判断当前是否用户登录,如果没有登录,跳转到登录页面
+        boolean isLogin = loginService.isLogin(request);
+        if (!isLogin){
+            response.sendRedirect("/toLogin");
+        }
+
+        return pjp.proceed();
+    }
+
 
 }

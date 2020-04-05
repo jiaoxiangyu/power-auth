@@ -3,17 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <!-- lookup parent from repository -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.8.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
+
     <groupId>cn.lookk</groupId>
     <artifactId>power-auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>power-auth</name>
     <packaging>jar</packaging>
-    <description>Demo project for Spring Boot</description>
+    <description></description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -29,6 +31,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- aspectJ 拦截器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
        <!-- mybatis-->
@@ -105,11 +113,13 @@
             <version>1.2.47</version>
         </dependency>
 
+        <!--junit-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+
 
     </dependencies>
 

@@ -3,6 +3,7 @@ package cn.lookk.powerauth.controller;
 import cn.lookk.handleexception.exception.Assert;
 import cn.lookk.handleexception.util.ResultUtil;
 import cn.lookk.handleexception.vo.Result;
+import cn.lookk.powerauth.annotation.Login;
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.po.RolePrivilege;
 import cn.lookk.powerauth.service.IPrivilegeService;
@@ -30,6 +31,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/rolePrivilege/")
+@Login
 public class RolePrivilegeController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleController.class);

@@ -1,5 +1,6 @@
 package cn.lookk.powerauth.controller;
 
+import cn.lookk.powerauth.annotation.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -22,12 +23,14 @@ public class ActionController {
 
     private static final Logger logger = LoggerFactory.getLogger(ActionController.class);
 
+    @Login
     @RequestMapping(value = "/{pageName}", method = RequestMethod.GET)
     public String actionView(@PathVariable(name = "pageName") String pageName) {
         logger.info("pageName={}",pageName);
         return pageName;
     }
 
+    @Login
     @RequestMapping(value = "/{pathName}/{pageName}", method = RequestMethod.GET)
     public String actionPathView(
             @PathVariable(name = "pathName") String pathName,

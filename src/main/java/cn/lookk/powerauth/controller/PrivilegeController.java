@@ -3,6 +3,7 @@ package cn.lookk.powerauth.controller;
 import cn.lookk.handleexception.exception.Assert;
 import cn.lookk.handleexception.util.ResultUtil;
 import cn.lookk.handleexception.vo.Result;
+import cn.lookk.powerauth.annotation.Login;
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.service.IPrivilegeService;
 import cn.lookk.powerauth.util.PageResultUtil;
@@ -24,8 +25,10 @@ import java.util.List;
  * @Version 1.0
  * @Since JDK1.8
  */
+@Login
 @RestController
 @RequestMapping(value = "/privilege/")
+
 public class PrivilegeController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
@@ -42,6 +45,7 @@ public class PrivilegeController {
      * @param search
      * @return  cn.lookk.powerauth.vo.PageResult
      */
+    @Login
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public PageResult find(@RequestParam(defaultValue = "1", name = "page") int page,
                            @RequestParam(defaultValue = "10", name = "limit") int limit,
@@ -58,6 +62,7 @@ public class PrivilegeController {
      * @param privilege
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public Result add(Privilege privilege){
         System.out.println("privilege="+privilege);
@@ -72,6 +77,7 @@ public class PrivilegeController {
      * @param id
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "del/{id}", method = RequestMethod.GET)
     public Result delete(@PathVariable("id")int id){
         Assert.isLessThanOrEqualZero(id, 412, "id is null");
@@ -86,6 +92,7 @@ public class PrivilegeController {
      * @param privilege
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public Result update(Privilege privilege){
         logger.info("update privilege={}", privilege);
@@ -99,6 +106,7 @@ public class PrivilegeController {
      * @param
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "getAll", method = RequestMethod.GET)
     public Result getAll(){
         List<Privilege> privileges = privilegeService.findAll();

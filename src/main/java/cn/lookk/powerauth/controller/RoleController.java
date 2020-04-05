@@ -3,6 +3,7 @@ package cn.lookk.powerauth.controller;
 import cn.lookk.handleexception.exception.Assert;
 import cn.lookk.handleexception.util.ResultUtil;
 import cn.lookk.handleexception.vo.Result;
+import cn.lookk.powerauth.annotation.Login;
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.RolePrivilege;
@@ -43,6 +44,7 @@ public class RoleController {
     @Autowired
     private IRolePrivilegeService rolePrivilegeService;
 
+    @Login
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public PageResult find(@RequestParam(defaultValue = "1", name = "page") int page,
                            @RequestParam(defaultValue = "10", name = "limit") int limit,
@@ -59,6 +61,7 @@ public class RoleController {
      * @param 
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "findAll", method = RequestMethod.GET)
     public Result findAll(){
         List<Role> roles = roleService.findAll();
@@ -71,6 +74,7 @@ public class RoleController {
      * @param role
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public Result add(Role role, String privilege){
         System.out.println("privilege="+privilege);
@@ -85,6 +89,7 @@ public class RoleController {
      * @param id
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "del/{id}", method = RequestMethod.GET)
     public Result delete(@PathVariable("id")int id){
         Assert.isLessThanOrEqualZero(id, 412, "id is null");
@@ -95,10 +100,11 @@ public class RoleController {
 
     /**
      * @title:  update
-     * @description:  TODO
+     * @description:  更新
      * @param role
      * @return  cn.wt.handleexception.vo.Result
      */
+    @Login
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public Result update(Role role, String privilege){
         logger.info("update role={}", role);
