@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/action")
 public class ActionController {
 
-
     private static final Logger logger = LoggerFactory.getLogger(ActionController.class);
 
     @Login

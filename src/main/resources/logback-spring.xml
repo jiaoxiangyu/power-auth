@@ -2,7 +2,7 @@
 <configuration debug="false">
 
     <!--定义日志文件的存储地址 -->
-    <property name="logback.logDir" value="/log/power-auth" />
+    <property name="logback.logDir" value="/Users/leeco/software/log/power-auth" />
     <!--定义应用名称 -->
     <property name="logback.appName" value="power-auth"/>
 
