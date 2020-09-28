@@ -242,7 +242,7 @@
                 area: ['400px', '390px'],
                 btn: ['确定', '取消'],
                 content:$("#form"),  //弹窗路径
-                success:function(layero,index){
+                success:function(layero, index){
                     $('#name').val("");
                     $('#phone').val("");
                     $('#pwd1').val("");
@@ -272,7 +272,7 @@
                 },
                 yes:function(index, layero) {
                     var param=$("form").serializeArray();
-                    param.push({name:"id", value: data.id});
+                    //param.push({name:"id", value: data.id});
                     $.ajax({
                         type: "POST",
                         url: "/user/add",

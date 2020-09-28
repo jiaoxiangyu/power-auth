@@ -43,7 +43,7 @@ public class UserCotroller {
 
     /**
      * @title:  toAdd
-     * @description:  TODO
+     * @description:  跳转添加页面
      * @param modelAndView
      * @return  org.springframework.web.servlet.ModelAndView
      */
@@ -58,7 +58,7 @@ public class UserCotroller {
 
     /**
      * @title:  add
-     * @description:  TODO
+     * @description:  添加
      * @param user
      * @return  cn.wt.handleexception.vo.Result
      */
@@ -70,7 +70,7 @@ public class UserCotroller {
 
     /**
      * @title:  findById
-     * @description:  TODO
+     * @description:  根据id查询
      * @param id
      * @return  org.springframework.web.servlet.ModelAndView
      */
@@ -81,7 +81,7 @@ public class UserCotroller {
 
     /**
      * @title:  find
-     * @description:  TODO
+     * @description:  分页条件查询
      * @param page
      * @param limit
      * @param search
@@ -113,7 +113,7 @@ public class UserCotroller {
 
     /**
      * @title:  update
-     * @description:  TODO
+     * @description:  更新
      * @param user
      * @return  cn.wt.handleexception.vo.Result
      */
