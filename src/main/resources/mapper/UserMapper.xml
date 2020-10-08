@@ -36,8 +36,8 @@
         <result property="pwd" column="pwd"/>
         <result property="roleId" column="role_id"/>
         <result property="role" column="role"/>
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
         <result property="del" column="del"/>
     </resultMap>
 

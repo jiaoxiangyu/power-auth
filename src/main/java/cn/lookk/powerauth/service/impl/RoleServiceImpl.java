@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(Role role, Integer[] privilegeIds) {
-        role.setUpdateTime(LocalDateTime.now());
+        role.setUpdateTime(new Date());
         roleMapper.update(role);
         //更新权限
         rolePrivilegeService.updateByRole(role, privilegeIds);

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @ClassName: Role
@@ -22,7 +23,7 @@ public class Role {
     private String name;
     private String description;
     //创建时间
-    private LocalDateTime createTime;
+    private Date createTime;
     //跟新时间
-    private LocalDateTime updateTime;
+    private Date updateTime;
 }

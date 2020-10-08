@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @ClassName: User
@@ -33,9 +34,9 @@ public class User {
     //角色
     private String role;
     //创建时间
-    private LocalDateTime createTime;
+    private Date createTime;
     //跟新时间
-    private LocalDateTime updateTime;
+    private Date updateTime;
     //删除标记
     private int del;
 }

@@ -18,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @ClassName: ILoginServiceImpl
@@ -97,7 +98,7 @@ public class LoginServiceImpl implements ILoginService {
         User loginUser = userService.login(user.getPhone(), user.getPwd());
         Assert.isNull(loginUser,4001,"手机号或密码错误");
         //更新登录时间
-        loginUser.setUpdateTime(LocalDateTime.now());
+        loginUser.setUpdateTime(new Date());
         userService.updateLoginTime(loginUser);
         //生成token
         String token = String.valueOf(idWorker.nextId());

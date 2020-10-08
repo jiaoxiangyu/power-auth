@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,8 +46,9 @@ public class UserServiceImpl implements IUserService {
     @Override
     public int add(User user) {
         user.setId(idWorker.nextId());
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
+        Date now = new Date();
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
         return userMapper.add(user);
     }
 
@@ -55,7 +57,7 @@ public class UserServiceImpl implements IUserService {
         Role role = roleMapper.findOneById(user.getRoleId());
         Assert.isNull(role, 413, "role is null");
         user.setRole(role.getName());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdateTime(new Date());
         return userMapper.update(user);
     }
 
