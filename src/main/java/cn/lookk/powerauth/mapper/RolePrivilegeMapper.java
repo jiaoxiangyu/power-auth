@@ -1,4 +1,4 @@
-package cn.lookk.powerauth.dao;
+package cn.lookk.powerauth.mapper;
 
 import cn.lookk.powerauth.po.RolePrivilege;
 import org.apache.ibatis.annotations.Param;

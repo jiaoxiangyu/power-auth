@@ -1,8 +1,8 @@
 package cn.lookk.powerauth.service.impl;
 
 import cn.lookk.handleexception.exception.Assert;
-import cn.lookk.powerauth.dao.RoleMapper;
-import cn.lookk.powerauth.dao.UserMapper;
+import cn.lookk.powerauth.mapper.RoleMapper;
+import cn.lookk.powerauth.mapper.UserMapper;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.User;
 import cn.lookk.powerauth.service.IUserService;
@@ -49,7 +49,7 @@ public class UserServiceImpl implements IUserService {
         Date now = new Date();
         user.setCreateTime(now);
         user.setUpdateTime(now);
-        return userMapper.add(user);
+        return userMapper.insert(user);
     }
 
     @Override

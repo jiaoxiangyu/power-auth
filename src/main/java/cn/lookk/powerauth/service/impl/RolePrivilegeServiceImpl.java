@@ -1,6 +1,6 @@
 package cn.lookk.powerauth.service.impl;
 
-import cn.lookk.powerauth.dao.RolePrivilegeMapper;
+import cn.lookk.powerauth.mapper.RolePrivilegeMapper;
 import cn.lookk.powerauth.po.Privilege;
 import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.po.RolePrivilege;
@@ -12,7 +12,6 @@ import cn.lookk.powerauth.vo.PageHelp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

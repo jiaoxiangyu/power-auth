@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.lookk.powerauth.dao.PrivilegeMapper">
+<mapper namespace="cn.lookk.powerauth.mapper.PrivilegeMapper">
 
     <insert id="add" parameterType="cn.lookk.powerauth.po.Privilege">
         insert  into  tb_privilege (name, url, description)

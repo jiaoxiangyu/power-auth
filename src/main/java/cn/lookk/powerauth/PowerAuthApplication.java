@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
-@MapperScan(basePackages = "cn.lookk.powerauth.dao")
+@MapperScan(basePackages = "cn.lookk.powerauth.mapper")
 @ComponentScan("cn.lookk.*")
 public class PowerAuthApplication {
 

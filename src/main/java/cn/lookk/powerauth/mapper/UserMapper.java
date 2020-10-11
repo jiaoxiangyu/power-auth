@@ -1,14 +1,14 @@
-package cn.lookk.powerauth.dao;
+package cn.lookk.powerauth.mapper;
 
 import cn.lookk.powerauth.po.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.Mapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
     int add(User user);
 
     int update(User user);

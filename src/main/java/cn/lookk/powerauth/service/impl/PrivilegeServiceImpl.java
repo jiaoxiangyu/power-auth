@@ -1,8 +1,7 @@
 package cn.lookk.powerauth.service.impl;
 
-import cn.lookk.powerauth.dao.PrivilegeMapper;
+import cn.lookk.powerauth.mapper.PrivilegeMapper;
 import cn.lookk.powerauth.po.Privilege;
-import cn.lookk.powerauth.po.Role;
 import cn.lookk.powerauth.service.IPrivilegeService;
 import cn.lookk.powerauth.util.PageUtil;
 import cn.lookk.powerauth.vo.PageHelp;
