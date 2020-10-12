@@ -1,5 +1,6 @@
 package cn.lookk.powerauth.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
@@ -20,6 +21,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
+@TableName("tb_user")
 public class User {
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;

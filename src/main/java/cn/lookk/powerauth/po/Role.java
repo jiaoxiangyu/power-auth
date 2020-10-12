@@ -1,5 +1,6 @@
 package cn.lookk.powerauth.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("tb_role")
 public class Role {
     private Integer id;
     private String name;
