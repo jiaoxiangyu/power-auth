@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @TableName("tb_user")
-public class User {
+public class User implements Serializable {
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
     //名字
